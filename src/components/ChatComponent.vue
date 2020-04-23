@@ -34,6 +34,8 @@
 
     import { Color, hexToRgb, Solver } from '@/colorizer'
 
+    const scale = 2;
+
     @Component({
         components: {
             Chrome
@@ -97,7 +99,6 @@
         }
 
         charStyle(c: string, fontData: any) {
-            const scale = 2
             console.log(fontData)
             const size = fontData[this.font].sizes["" + c.charCodeAt(0)];
             const height = (size ? size.height : 8) * scale;
@@ -114,7 +115,8 @@
                 // width: size,
                 // Char stuff
                 height: height + "px",
-                display: 'inline-block'
+                display: 'inline-block',
+                paddingRight: scale+"px"
             }
         }
 
