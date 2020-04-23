@@ -25,6 +25,7 @@
           </md-card>
         </div>
       </div>
+      <br/>
       <div class="md-layout-item">
         <div class="component-list">
           <md-card md-with-hover>
