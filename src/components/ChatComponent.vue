@@ -2,7 +2,7 @@
   <div class="chat-component">
     <md-field>
       <label for="text">Text</label>
-      <md-input name="text" type="text" v-model="text" @keyup="textChange"></md-input>
+      <md-textarea name="text" type="text" v-model="text" @keyup="textChange"></md-textarea>
     </md-field>
     <md-field>
       <label for="font">Font</label>
@@ -13,7 +13,7 @@
     <div>
       <label for="color">Color</label>
 <!--      <md-input name="color" type="text" v-model="color" @keyup="colorChange"></md-input>-->
-      <Chrome v-model="color" name="color" @input="colorChange"></Chrome>
+      <Chrome v-model="color" name="color" :disable-alpha="true" @input="colorChange"></Chrome>
     </div>
   </div>
 </template>
@@ -34,7 +34,7 @@
     export default class ChatComponent extends Vue {
        @Prop(Number) index!: number;
         text = 'test';
-        font = 'default';
+        font = 'minecraft:default';
          color_ = '#ffffff';
 
          filter = 'saturate(1)'
@@ -73,12 +73,21 @@
                  // background: 'linear-gradient(' + this.color + ', ' + this.color + '), #00F',
                  'filter': this.filter,
                  backgroundBlendMode: 'multiply',
-                 backgroundRepeat: 'no-repeat'
+                 backgroundRepeat: 'no-repeat',
+                 display: 'inline-block'
              }
          }
 
+         fontNamespace () {
+             return this.font.split(":")[0]
+         }
+
+        fontName () {
+            return this.font.split(":")[1]
+        }
+
          charSrc (c: string) {
-             return '/font_data/minecraft/default/c' + c.charCodeAt(0) + '.png'
+             return '/font_data/' + this.fontNamespace() + '/' + this.fontName() + '/c' + c.charCodeAt(0) + '.png'
          }
 
         charStyle (c: string) {

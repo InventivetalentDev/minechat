@@ -4,7 +4,10 @@
       <div class="text-background" v-bind:style="backgroundStyle()">
         <div class="text-renderer">
           <div v-for="(component, compIndex) in components" :key="compIndex" v-bind:style="component.compStyle()">
-            <img v-for="(t, ti) in component.text" :key="ti" v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t)" v-bind:title="t"/>
+            <!-- Iterate all characters -->
+            <!-- Swap IMG with BR for line breaks -->
+            <component v-for="(t, ti) in component.text" :key="ti" v-bind:title="t" v-bind:is="isLineBreak(t) ? 'br' : 'img'" class="char-container" v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t)">
+            </component>
           </div>
         </div>
       </div>
@@ -27,6 +30,12 @@
   }
   .text-renderer {
     padding: 10px;
+  }
+  .char-container {
+    display: inline-block;
+  }
+  .char-container-break {
+    display: block;
   }
 </style>
 
@@ -66,8 +75,12 @@
 
         backgroundStyle () {
             return {
-                background: 'url("https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/20w17a/assets/minecraft/textures/block/' + this.backgroundTexture + '.png")'
+                backgroundImage: 'url("https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/20w17a/assets/minecraft/textures/block/' + this.backgroundTexture + '.png")'
             }
+        }
+
+        isLineBreak(c: string) {
+            return c === '\n'
         }
 
         onText (data: any) {
@@ -106,6 +119,10 @@
         mounted (): void {
             fetch('https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + MCASSET_VERSION + '/assets/minecraft/font/default.json').then((res) => res.json()).then((data) => {
                 this.availableFonts.push('minecraft:default')
+                window.console.log(data)
+            })
+            fetch('https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + MCASSET_VERSION + '/assets/minecraft/font/alt.json').then((res) => res.json()).then((data) => {
+                this.availableFonts.push('minecraft:alt')
                 window.console.log(data)
             })
         }

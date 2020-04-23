@@ -11,7 +11,19 @@ const FONTS = [{
   data: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + VERSION + '/assets/minecraft/font/default.json',
   imageBase: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + VERSION + '/assets/minecraft/textures/',
   prefix: 'minecraft:'
-}]
+},
+//   {
+//   name: 'minecraft:uniform',
+//   data: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + VERSION + '/assets/minecraft/font/uniform.json',
+//   imageBase: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + VERSION + '/assets/minecraft/textures/',
+//   prefix: 'minecraft:'
+// },
+  {
+    name: 'minecraft:alt',
+    data: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + VERSION + '/assets/minecraft/font/alt.json',
+    imageBase: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + VERSION + '/assets/minecraft/textures/',
+    prefix: 'minecraft:'
+  }]
 
 async function doStuff () {
   for (let font of FONTS) {
@@ -22,7 +34,7 @@ async function doStuff () {
     let split = font.name.split(':')
     let fontDir = path.join('public', 'font_data', split[0], split[1])
     shell.mkdir('-p', fontDir)
-    let p = 0;
+    let p = 0
     for (let provider of data.providers) {
       if (provider.type === 'bitmap') {
         let rows = provider.chars.length
@@ -47,13 +59,13 @@ async function doStuff () {
               y: r * secHeight,
               width: secWidth,
               height: secHeight
-            });
-            let sav = path.join(fontDir, "c"+charCode+".png");
+            })
+            let sav = path.join(fontDir, 'c' + charCode + '.png')
             if (fs.existsSync(sav)) {
-              console.warn('Duplicate image for charCode ' + charCode + ' (' + provider.chars[r][c] + ') at r'+r+' c'+c)
+              console.warn('Duplicate image for charCode ' + charCode + ' (' + provider.chars[r][c] + ') at r' + r + ' c' + c)
             }
-            await sec.save(sav,{
-              format:"png"
+            await sec.save(sav, {
+              format: 'png'
             })
           }
         }
