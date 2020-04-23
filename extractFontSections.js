@@ -27,6 +27,7 @@ const FONTS = [{
 
 async function doStuff () {
   for (let font of FONTS) {
+    let sizes = {}
     let data = await request({
       uri: font.data,
       json: true
@@ -50,6 +51,7 @@ async function doStuff () {
         let img = await Image.load(res)
         let secWidth = Math.round(img.width / cols)
         let secHeight = Math.round(img.height / rows)
+        let ascent = provider.ascent
         console.log('sections: ' + secWidth + 'x' + secHeight)
         for (let r = 0; r < rows; r++) {
           for (let c = 0; c < cols; c++) {
@@ -59,8 +61,20 @@ async function doStuff () {
               y: r * secHeight,
               width: secWidth,
               height: secHeight
-            });
-              sec = cropAlphaRight(sec, 0.1);
+            })
+            sec = cropAlphaRight(sec, 0.1)
+            if (ascent) {// this seems to specifiy the height of the character
+              sec = sec.crop({
+                x: 0,
+                y: sec.height-1 - ascent,
+                width: sec.width,
+                height: ascent
+              })
+            }
+          // There's also a 'height' property, though I haven't yet figured out what that is for.
+            sizes[charCode] = {
+              height: sec.height
+            }
             let sav = path.join(fontDir, 'c' + charCode + '.png')
             if (fs.existsSync(sav)) {
               console.warn('Duplicate image for charCode ' + charCode + ' (' + provider.chars[r][c] + ') at r' + r + ' c' + c)
@@ -72,34 +86,35 @@ async function doStuff () {
         }
       }
     }
+    fs.writeFileSync(path.join(fontDir, 'sizes.json'), JSON.stringify(sizes), 'utf8')
   }
 
 }
 
 // based on https://github.com/image-js/image-js/blob/a2deb5b4c193263d1cb784005d904ec7966f63cb/src/image/transform/cropAlpha.js#L10 - only cropping right side
 function cropAlphaRight (image, threshold = 0.5) {
-let right = findRight(image, threshold, 4)
+  let right = findRight(image, threshold, 4)
   if (right === -1) {
-    return image;
+    return image
   }
   return image.crop({
     x: 0,
     y: 0,
-    width: Math.min(right+1+1, image.width)/* 1 to get to actual with and another 1 for padding */,
+    width: Math.min(right + 1 + 1, image.width)/* 1 to get to actual with and another 1 for padding */,
     height: image.height
   })
 }
 
 // based on https://github.com/image-js/image-js/blob/a2deb5b4c193263d1cb784005d904ec7966f63cb/src/image/transform/cropAlpha.js#L70
-function findRight(image, threshold, channel) {
+function findRight (image, threshold, channel) {
   for (let x = image.width - 1; x >= 0; x--) {
     for (let y = 0; y < image.height; y++) {
       if (image.getValueXY(x, y, 3) >= threshold) {
-        return x;
+        return x
       }
     }
   }
-  return -1;
+  return -1
 }
 
 doStuff()

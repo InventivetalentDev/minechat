@@ -6,14 +6,16 @@
           <template v-for="(component, compIndex) in components" v-bind:style="component.compStyle()">
             <!-- Iterate all characters -->
             <!-- Swap IMG with BR for line breaks -->
-            <component v-for="(t, ti) in component.text" :key="compIndex + '_' + ti" v-bind:title="t" v-bind:is="isLineBreak(t) ? 'br' : 'img'" class="char-container" v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t)">
+            <component v-for="(t, ti) in component.text" :key="compIndex + '_' + ti" v-bind:title="t" v-bind:is="isLineBreak(t) ? 'br' : 'img'" class="char-container" v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData)">
             </component>
           </template>
         </div>
       </div>
     </div>
     <div>
-      <code><pre>{{ componentJson }}</pre></code>
+      <code>
+        <pre>{{ componentJson }}</pre>
+      </code>
     </div>
 
 
@@ -38,6 +40,8 @@
 
   .char-container {
     display: inline-block;
+    padding: 0;
+    margin: 0;
   }
 
   .char-container-break {
@@ -133,16 +137,22 @@
             this.components.push(new Comp())
         }
 
+        addFont(name: string, data: any) {
+            let split = name.split(":");
+            fetch("/font_data/" + split[0] + "/" + split[1] + "/sizes.json").then(res => res.json()).then(sizes => {
+                data.sizes = sizes;
+                this.fontData[name] = data
+                this.availableFonts.push(name);
+                window.console.log("Font " + name + " added")
+            })
+        }
+
         mounted(): void {
             fetch('https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + MCASSET_VERSION + '/assets/minecraft/font/default.json').then((res) => res.json()).then((data) => {
-                this.availableFonts.push('minecraft:default');
-                this.fontData["minecraft:default"] = data
-                window.console.log(data)
+                this.addFont("minecraft:default", data);
             })
             fetch('https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + MCASSET_VERSION + '/assets/minecraft/font/alt.json').then((res) => res.json()).then((data) => {
-                this.availableFonts.push('minecraft:alt')
-                this.fontData["minecraft:alt"] = data
-                window.console.log(data)
+                this.addFont("minecraft:alt", data);
             })
         }
     }
