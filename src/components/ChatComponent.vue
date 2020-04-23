@@ -68,9 +68,6 @@
 
          compStyle () {
              return {
-                 // color: this.color,
-                 // backgroundColor: this.color,
-                 // background: 'linear-gradient(' + this.color + ', ' + this.color + '), #00F',
                  'filter': this.filter,
                  backgroundBlendMode: 'multiply',
                  backgroundRepeat: 'no-repeat',
@@ -95,13 +92,27 @@
             /// COLORS https://codepen.io/sosuke/pen/Pjoqqp
             //  https://stackoverflow.com/questions/42966641/how-to-transform-black-into-any-given-color-using-only-css-filters/43960991#43960991
             return {
+                 // Component stuff
+                'filter': this.filter,
+                backgroundBlendMode: 'multiply',
+                backgroundRepeat: 'no-repeat',
                 // background: 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("/font_data/minecraft/default/c' + c.charCodeAt(0) + '.png")',
                 // backgroundPosition: '0px 0px',
                 // backgroundSize: size + ' ' + size,
-                width: size,
+                // width: size,
+                // Char stuff
                 height: size,
                 display: 'inline-block'
             }
+        }
+
+
+        getJson (): any {
+             return {
+                 text: this.text,
+                 color: this.color,
+                 font: this.font
+             }
         }
 
         textChange () {
