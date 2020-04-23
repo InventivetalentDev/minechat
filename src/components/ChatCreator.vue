@@ -97,6 +97,7 @@
   .text-background {
     image-rendering: pixelated;
     background-size: contain;
+    min-height: 40px;
   }
 
   .text-renderer {
