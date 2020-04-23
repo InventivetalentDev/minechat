@@ -2,6 +2,34 @@
   <div class="chat-creator">
     <div class="md-layout">
       <div class="md-layout-item">
+        <div class="component-list">
+          <md-card md-with-hover>
+            <md-card-header>
+              <div class="md-title">Components
+                <md-button class="md-primary narrow-button" @click="addComponent">+</md-button>
+              </div>
+            </md-card-header>
+
+            <md-card-content>
+              <div v-for="(comp, arrIndex) in components" :key="comp.index">
+                <br/>
+                <ChatComponent v-bind:index="comp.index" v-bind:arr-index="arrIndex" v-bind:available-fonts="availableFonts" @textChange="onText" @fontChange="onFont" @colorChange="onColor" @removeComponent="removeComponent">
+                  <!--      <component :is="item" :key="index"></component>-->
+                </ChatComponent>
+                <br/>
+                <md-divider/>
+              </div>
+            </md-card-content>
+            <md-card-actions>
+              <md-button v-on:click="addComponent()">Add Component</md-button>
+            </md-card-actions>
+          </md-card>
+        </div>
+      </div>
+
+      <br/>
+
+      <div class="md-layout-item">
         <div class="text-view">
           <md-card md-with-hover>
             <md-card-header>
@@ -31,30 +59,7 @@
           </md-card>
         </div>
       </div>
-      <br/>
-      <div class="md-layout-item">
-        <div class="component-list">
-          <md-card md-with-hover>
-            <md-card-header>
-              <div class="md-title">Components <md-button class="md-primary narrow-button" @click="addComponent">+</md-button></div>
-            </md-card-header>
 
-            <md-card-content>
-              <div v-for="(item, index) in components" :key="item.index">
-                <br/>
-                <ChatComponent v-bind:index="index" v-bind:available-fonts="availableFonts" @textChange="onText" @fontChange="onFont" @colorChange="onColor" @removeComponent="removeComponent">
-                  <!--      <component :is="item" :key="index"></component>-->
-                </ChatComponent>
-                <br/>
-                <md-divider/>
-              </div>
-            </md-card-content>
-            <md-card-actions>
-              <md-button v-on:click="addComponent()">Add Component</md-button>
-            </md-card-actions>
-          </md-card>
-        </div>
-      </div>
     </div>
 
 
@@ -158,7 +163,7 @@
             return base
         }
 
-        get backgroundTextureKeys () {
+        get backgroundTextureKeys() {
             return Object.keys(this.backgroundTextures);
         }
 
@@ -170,7 +175,7 @@
             }
         }
 
-        backgroundTextureChange(){
+        backgroundTextureChange() {
 
         }
 
@@ -184,16 +189,17 @@
         }
 
         onFont(data: any) {
-            window.console.log('onFont: ' + data)
+            window.console.log('onFont: ' + JSON.stringify(data))
             this.setCompProp(data.index, 'font', data.value)
         }
 
         onColor(data: any) {
-            window.console.log('onColor: ' + data)
+            window.console.log('onColor: ' + JSON.stringify(data))
             this.setCompProp(data.index, 'color', data.value)
         }
 
         removeComponent(data: any) {
+            window.console.log('removeComponent: ' + JSON.stringify(data))
             this.components.splice(data.index, 1);
             this.$forceUpdate()
         }

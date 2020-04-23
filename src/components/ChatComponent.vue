@@ -1,5 +1,6 @@
 <template>
   <div class="chat-component">
+    I{{ index }} A{{ arrIndex }}
     <md-button class="md-accent remove-component-button narrow-button" @click="removeSelf">X</md-button>
     <md-field>
       <label for="text">Text</label>
@@ -39,6 +40,7 @@
         }
     })
     export default class ChatComponent extends Vue {
+        @Prop(Number) arrIndex!: number;
         @Prop(Number) index!: number;
         @Prop(Array) availableFonts!: string[]
         text = 'test';
@@ -119,6 +121,8 @@
 
         getJson(): any {
             return {
+                _idx: this.index || -1,
+                _aidx: this.arrIndex || -1,
                 text: this.text,
                 color: this.color,
                 font: this.font
@@ -127,22 +131,22 @@
 
         textChange() {
             window.console.log('textChange')
-            this.$emit('textChange', { index: this.index, value: this.text })
+            this.$emit('textChange', { index: this.arrIndex, value: this.text })
         }
 
         fontChange() {
             window.console.log('fontChange')
-            this.$emit('fontChange', { index: this.index, value: this.font })
+            this.$emit('fontChange', { index: this.arrIndex, value: this.font })
         }
 
         colorChange() {
             window.console.log('colorChange')
             this.filter = this.filterColor()
-            this.$emit('colorChange', { index: this.index, value: this.color })
+            this.$emit('colorChange', { index: this.arrIndex, value: this.color })
         }
 
-        removeSelf(){
-            this.$emit('removeComponent', { index: this.index })
+        removeSelf() {
+            this.$emit('removeComponent', { index: this.arrIndex })
         }
 
         mounted(): void {
