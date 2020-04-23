@@ -98,10 +98,13 @@
             return '/font_data/' + this.fontNamespace() + '/' + this.fontName() + '/c' + c.charCodeAt(0) + '.png'
         }
 
-        charStyle(c: string, fontData: any) {
-            console.log(fontData)
+        charStyle(c: string, fontData: any, previewScale: number) {
+            if (!previewScale) {
+                previewScale = 2;
+            }
+            console.log(fontData);
             const size = fontData[this.font].sizes["" + c.charCodeAt(0)];
-            const height = (size ? size.height : 8) * scale;
+            const height = /*(size ? size.height : 8) * scale*/ 8*previewScale;
             /// COLORS https://codepen.io/sosuke/pen/Pjoqqp
             //  https://stackoverflow.com/questions/42966641/how-to-transform-black-into-any-given-color-using-only-css-filters/43960991#43960991
             return {
@@ -116,7 +119,7 @@
                 // Char stuff
                 height: height + "px",
                 display: 'inline-block',
-                paddingRight: scale+"px"
+                paddingRight: previewScale+"px"
             }
         }
 

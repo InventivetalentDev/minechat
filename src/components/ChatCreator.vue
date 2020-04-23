@@ -41,17 +41,28 @@
                   <template v-for="(component, compIndex) in components" v-bind:style="component.compStyle()">
                     <!-- Iterate all characters -->
                     <!-- Swap IMG with BR for line breaks -->
-                    <component v-for="(t, ti) in component.text" :key="component.index + '_' + ti" v-bind:title="t" v-bind:is="isLineBreak(t) ? 'br' : 'img'" class="char-container" v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData)">
+                    <component v-for="(t, ti) in component.text" :key="component.index + '_' + ti" v-bind:title="t" v-bind:is="isLineBreak(t) ? 'br' : 'img'" class="char-container" v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale)">
                     </component>
                   </template>
                 </div>
               </div>
-              <md-field>
-                <label for="font">Background</label>
-                <md-select name="font" v-model="backgroundTexture" @md-selected="backgroundTextureChange">
-                  <md-option v-for="(bg, bi) in backgroundTextureKeys" v-bind:value="bg" v-bind:key="bi">{{ bg }}</md-option>
-                </md-select>
-              </md-field>
+              <br/>
+             <div class="md-layout md-gutter">
+               <div class="md-layout-item">
+                 <md-field>
+                   <label for="font">Background</label>
+                   <md-select name="font" v-model="backgroundTexture" @md-selected="backgroundTextureChange">
+                     <md-option v-for="(bg, bi) in backgroundTextureKeys" v-bind:value="bg" v-bind:key="bi">{{ bg }}</md-option>
+                   </md-select>
+                 </md-field>
+               </div>
+               <div class="md-layout-item">
+                 <md-field>
+                   <label for="previewScale">Preview Scale</label>
+                   <md-input name="previewScale" type="number" v-model.number="previewScale"></md-input>
+                 </md-field>
+               </div>
+             </div>
               <code>
                 <pre>{{ componentJson }}</pre>
               </code>
@@ -137,6 +148,8 @@
 
         availableFonts: string[] = [];
         fontData: any = {};
+
+        previewScale: number =2
         //
         // @Watch('components', { deep: true })
         // componentChanged (val: any, oldVal: any) {
