@@ -1,34 +1,76 @@
 <template>
   <div class="chat-creator">
-    <div>
-      <div class="text-background" v-bind:style="backgroundStyle()">
-        <div class="text-renderer">
-          <template v-for="(component, compIndex) in components" v-bind:style="component.compStyle()">
-            <!-- Iterate all characters -->
-            <!-- Swap IMG with BR for line breaks -->
-            <component v-for="(t, ti) in component.text" :key="compIndex + '_' + ti" v-bind:title="t" v-bind:is="isLineBreak(t) ? 'br' : 'img'" class="char-container" v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData)">
-            </component>
-          </template>
+    <div class="md-layout">
+      <div class="md-layout-item">
+        <div class="text-view">
+          <md-card md-with-hover>
+            <md-card-header>
+              <div class="md-title">Preview</div>
+            </md-card-header>
+            <md-card-content>
+              <div class="text-background" v-bind:style="backgroundStyle()">
+                <div class="text-renderer">
+                  <template v-for="(component, compIndex) in components" v-bind:style="component.compStyle()">
+                    <!-- Iterate all characters -->
+                    <!-- Swap IMG with BR for line breaks -->
+                    <component v-for="(t, ti) in component.text" :key="component.index + '_' + ti" v-bind:title="t" v-bind:is="isLineBreak(t) ? 'br' : 'img'" class="char-container" v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData)">
+                    </component>
+                  </template>
+                </div>
+              </div>
+              <code>
+                <pre>{{ componentJson }}</pre>
+              </code>
+            </md-card-content>
+          </md-card>
+        </div>
+      </div>
+      <div class="md-layout-item">
+        <div class="component-list">
+          <md-card md-with-hover>
+            <md-card-header>
+              <div class="md-title">Components <md-button class="md-primary narrow-button" @click="addComponent">+</md-button></div>
+            </md-card-header>
+
+            <md-card-content>
+              <div v-for="(item, index) in components" :key="item.index">
+                <br/>
+                <ChatComponent v-bind:index="index" v-bind:available-fonts="availableFonts" @textChange="onText" @fontChange="onFont" @colorChange="onColor" @removeComponent="removeComponent">
+                  <!--      <component :is="item" :key="index"></component>-->
+                </ChatComponent>
+                <br/>
+                <md-divider/>
+              </div>
+            </md-card-content>
+            <md-card-actions>
+              <md-button v-on:click="addComponent()">Add Component</md-button>
+            </md-card-actions>
+          </md-card>
         </div>
       </div>
     </div>
-    <div>
-      <code>
-        <pre>{{ componentJson }}</pre>
-      </code>
-    </div>
 
 
-    <ChatComponent v-for="(item, index) in components" v-bind:index="index" v-bind:text="item.text" :key="index" @textChange="onText" @fontChange="onFont" @colorChange="onColor">
-      <!--      <component :is="item" :key="index"></component>-->
-    </ChatComponent>
-
-    <md-button v-on:click="addComponent()">Add Component</md-button>
   </div>
 </template>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+  /*.chat-creator {*/
+  /*  height: 85vh;*/
+  /*  max-height: 95vh;*/
+  /*}*/
+
+  /*.text-view {*/
+  /*  overflow-y: scroll;*/
+  /*  height: 30%*/
+  /*}*/
+
+  /*.component-list {*/
+  /*  overflow-y: scroll;*/
+  /*  height: 70%;*/
+  /*}*/
+
   .text-background {
     image-rendering: pixelated;
     background-size: contain;
@@ -60,9 +102,16 @@
         }
     })
     export default class ChatCreator extends Vue {
+        compCounter: number = 1
         components: ChatComponent[] = [];
 
-        backgroundTexture = 'dirt';
+        backgroundTextures: any = {
+            dirt: {
+                image: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + MCASSET_VERSION + '/assets/minecraft/textures/block/dirt.png',
+                color: '#a5522a'
+            }
+        };
+        backgroundTexture: string = 'dirt';
 
         availableFonts: string[] = [];
         fontData: any = {};
@@ -95,8 +144,10 @@
         }
 
         backgroundStyle() {
+            let tex = this.backgroundTextures[this.backgroundTexture];
             return {
-                backgroundImage: 'url("https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/20w17a/assets/minecraft/textures/block/' + this.backgroundTexture + '.png")'
+                backgroundImage: 'url(' + tex.image + ')',
+                backgroundColor: tex.color
             }
         }
 
@@ -119,6 +170,11 @@
             this.setCompProp(data.index, 'color', data.value)
         }
 
+        removeComponent(data: any) {
+            this.components.splice(data.index, 1);
+            this.$forceUpdate()
+        }
+
         setCompProp(index: number, prop: string, value: any) {
             const updated = this.components[index] as any
             updated[prop] = value
@@ -133,8 +189,9 @@
 
         @Emit()
         addComponent() {
-            const Comp = Vue.extend(ChatComponent)
-            this.components.push(new Comp())
+            const comp = new ChatComponent() as any
+            comp.index = this.compCounter++;
+            this.components.push(comp)
         }
 
         addFont(name: string, data: any) {

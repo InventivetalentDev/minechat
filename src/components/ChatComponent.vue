@@ -1,5 +1,6 @@
 <template>
   <div class="chat-component">
+    <md-button class="md-accent remove-component-button narrow-button" @click="removeSelf">X</md-button>
     <md-field>
       <label for="text">Text</label>
       <md-textarea name="text" type="text" v-model="text" @keyup="textChange"></md-textarea>
@@ -7,7 +8,7 @@
     <md-field>
       <label for="font">Font</label>
       <md-select name="font" v-model="font" @md-selected="fontChange">
-        <md-option v-for="(font, fi) in $parent.availableFonts" v-bind:value="font" v-bind:key="fi">{{ font }}</md-option>
+        <md-option v-for="(font, fi) in availableFonts" v-bind:value="font" v-bind:key="fi">{{ font }}</md-option>
       </md-select>
     </md-field>
     <div>
@@ -17,6 +18,12 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+  .remove-component-button {
+    float: right;
+  }
+</style>
 
 <script lang="ts">
     import { Component, Emit, Model, Prop, PropSync, Provide, Vue } from 'vue-property-decorator'
@@ -33,13 +40,12 @@
     })
     export default class ChatComponent extends Vue {
         @Prop(Number) index!: number;
-        @Prop(Object) fontData!: any
+        @Prop(Array) availableFonts!: string[]
         text = 'test';
         font = 'minecraft:default';
         color_ = '#ffffff';
 
         filter = 'saturate(1)'
-
 
         get color() {
             return this.color_
@@ -133,6 +139,10 @@
             window.console.log('colorChange')
             this.filter = this.filterColor()
             this.$emit('colorChange', { index: this.index, value: this.color })
+        }
+
+        removeSelf(){
+            this.$emit('removeComponent', { index: this.index })
         }
 
         mounted(): void {

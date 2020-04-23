@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import VueMaterial from 'vue-material'
 
+import './assets/css/style.scss'
+
 Vue.config.productionTip = false
 
 Vue.use(VueMaterial)
