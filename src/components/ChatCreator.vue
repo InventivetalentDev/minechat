@@ -18,6 +18,12 @@
                   </template>
                 </div>
               </div>
+              <md-field>
+                <label for="font">Background</label>
+                <md-select name="font" v-model="backgroundTexture" @md-selected="backgroundTextureChange">
+                  <md-option v-for="(bg, bi) in backgroundTextureKeys" v-bind:value="bg" v-bind:key="bi">{{ bg }}</md-option>
+                </md-select>
+              </md-field>
               <code>
                 <pre>{{ componentJson }}</pre>
               </code>
@@ -110,9 +116,17 @@
             dirt: {
                 image: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + MCASSET_VERSION + '/assets/minecraft/textures/block/dirt.png',
                 color: '#a5522a'
+            },
+            stone: {
+                image: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + MCASSET_VERSION + '/assets/minecraft/textures/block/stone.png',
+                color: '#838383'
+            },
+            snow: {
+                image: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + MCASSET_VERSION + '/assets/minecraft/textures/block/snow.png',
+                color: '#f5f5f5'
             }
         };
-        backgroundTexture: string = 'dirt';
+        backgroundTexture: string = 'stone';
 
         availableFonts: string[] = [];
         fontData: any = {};
@@ -144,12 +158,20 @@
             return base
         }
 
+        get backgroundTextureKeys () {
+            return Object.keys(this.backgroundTextures);
+        }
+
         backgroundStyle() {
             let tex = this.backgroundTextures[this.backgroundTexture];
             return {
                 backgroundImage: 'url(' + tex.image + ')',
                 backgroundColor: tex.color
             }
+        }
+
+        backgroundTextureChange(){
+
         }
 
         isLineBreak(c: string) {
