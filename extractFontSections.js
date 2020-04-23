@@ -40,9 +40,10 @@ async function doStuff () {
         }
         let secWidth = Math.round(img.width / cols)
         let secHeight = Math.round(img.height / rows)
-        let imgScale = img.width / 128 ; // regular font image is 128 wide
+        let imgScale = Math.round(img.width / 128 ); // regular font image is 128 wide
         console.log("img scale: "+imgScale)
-        let ascent = provider.ascent
+        let ascent = provider.ascent || 8
+        let height = provider.height || 8;
         console.log('sections: ' + secWidth + 'x' + secHeight)
         for (let r = 0; r < rows; r++) {
           for (let c = 0; c < cols; c++) {
@@ -53,23 +54,23 @@ async function doStuff () {
               width: secWidth,
               height: secHeight
             })
-            sec = cropAlphaRight(sec, 0.1)
             if (ascent && !font.doNotCrop) {// this seems to specifiy the height of the character
               console.log('original ascent: ' + ascent)
               let scaledAscent = font.doNotScale ? ascent : (ascent * imgScale)
               console.log('scaled ascent: ' + scaledAscent)
               sec = sec.crop({
                 x: 0,
-                y: sec.height -1 - scaledAscent,
-                width: sec.width,
+                y: 0,
+                width: secWidth,
                 height: scaledAscent
               })
             }
-          // There's also a 'height' property, though I haven't yet figured out what that is for.
+            sec = cropAlphaRight(sec, 0.1)
+          // There's also a 'height' property, which seems to specify the section heights
             sizes[charCode] = {
               height: sec.height
             }
-            let sav = path.join(fontDir, 'c' + charCode + '.png')
+            let sav = path.join(fontDir, /*path.basename(file)+*/ 'c' + charCode + '.png')
             if (fs.existsSync(sav)) {
               console.warn('Duplicate image for charCode ' + charCode + ' (' + provider.chars[r][c] + ') at r' + r + ' c' + c)
             }
@@ -94,7 +95,7 @@ function cropAlphaRight (image, threshold = 0.5) {
   return image.crop({
     x: 0,
     y: 0,
-    width: Math.min(right + 1 + 1, image.width)/* 1 to get to actual with and another 1 for padding */,
+    width: Math.min(right + 1 /*+ 1*/, image.width)/* 1 to get to actual with and another 1 for padding */,
     height: image.height
   })
 }

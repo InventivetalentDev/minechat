@@ -6,6 +6,7 @@ export const FONTS = [
   data: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + VERSION + '/assets/minecraft/font/default.json',
   imageBase: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + VERSION + '/assets/minecraft/textures/',
   prefix: 'minecraft:',
+    // doNotCrop: true
 },
 //   {
 //   name: 'minecraft:uniform',
