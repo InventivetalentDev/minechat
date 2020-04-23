@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "npm run compile-vars && vue-cli-service serve",
+    "build": "npm run compile-vars && vue-cli-service build",
     "lint": "vue-cli-service lint",
 
     "compile-vars": "tsc vars.ts && tsc fonts.ts",

@@ -108,7 +108,7 @@
     import ChatComponent from '@/components/ChatComponent.vue'
     import { MCASSET_VERSION } from '../../vars'
 
-    import Fonts from "../../fonts"
+    import {FONTS} from "../../fonts"
 
     @Component({
         components: {
