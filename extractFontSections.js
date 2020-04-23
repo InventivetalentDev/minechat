@@ -4,26 +4,7 @@ const path = require('path')
 const shell = require('shelljs')
 const { Image } = require('image-js')
 
-const VERSION = '20w17a'
-
-const FONTS = [{
-  name: 'minecraft:default',
-  data: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + VERSION + '/assets/minecraft/font/default.json',
-  imageBase: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + VERSION + '/assets/minecraft/textures/',
-  prefix: 'minecraft:'
-},
-//   {
-//   name: 'minecraft:uniform',
-//   data: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + VERSION + '/assets/minecraft/font/uniform.json',
-//   imageBase: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + VERSION + '/assets/minecraft/textures/',
-//   prefix: 'minecraft:'
-// },
-  {
-    name: 'minecraft:alt',
-    data: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + VERSION + '/assets/minecraft/font/alt.json',
-    imageBase: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + VERSION + '/assets/minecraft/textures/',
-    prefix: 'minecraft:'
-  }]
+const {FONTS} = require("./fonts.js")
 
 async function doStuff () {
   for (let font of FONTS) {
@@ -44,13 +25,23 @@ async function doStuff () {
         console.log(file)
         // let dir = path.join(fontDir, 'p' + (p++))
         // shell.mkdir('-p', dir)
-        let res = await request({
-          uri: file,
-          encoding: null
-        })
-        let img = await Image.load(res)
+        let img;
+        if(file.startsWith("http")) {
+          let res = await request({
+            uri: file,
+            encoding: null
+          })
+          img = await Image.load(res)
+        } else {
+          if(!fs.existsSync(file)){
+            continue;
+          }
+          img = await Image.load(file)
+        }
         let secWidth = Math.round(img.width / cols)
         let secHeight = Math.round(img.height / rows)
+        let imgScale = img.width / 128 ; // regular font image is 128 wide
+        console.log("img scale: "+imgScale)
         let ascent = provider.ascent
         console.log('sections: ' + secWidth + 'x' + secHeight)
         for (let r = 0; r < rows; r++) {
@@ -63,12 +54,15 @@ async function doStuff () {
               height: secHeight
             })
             sec = cropAlphaRight(sec, 0.1)
-            if (ascent) {// this seems to specifiy the height of the character
+            if (ascent && !font.doNotCrop) {// this seems to specifiy the height of the character
+              console.log('original ascent: ' + ascent)
+              let scaledAscent = font.doNotScale ? ascent : (ascent * imgScale)
+              console.log('scaled ascent: ' + scaledAscent)
               sec = sec.crop({
                 x: 0,
-                y: sec.height-1 - ascent,
+                y: sec.height -1 - scaledAscent,
                 width: sec.width,
-                height: ascent
+                height: scaledAscent
               })
             }
           // There's also a 'height' property, though I haven't yet figured out what that is for.

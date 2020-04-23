@@ -28,7 +28,7 @@
 
 <script lang="ts">
     import { Component, Emit, Model, Prop, PropSync, Provide, Vue } from 'vue-property-decorator'
-    import { MCASSET_VERSION } from '@/vars'
+    import { MCASSET_VERSION } from '../../vars'
     import Material from 'vue-color/src/components/Material.vue'
     import Chrome from 'vue-color/src/components/Chrome.vue'
 

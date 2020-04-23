@@ -106,7 +106,9 @@
 <script lang="ts">
     import { Component, Emit, Prop, PropSync, Provide, Vue, Watch } from 'vue-property-decorator'
     import ChatComponent from '@/components/ChatComponent.vue'
-    import { MCASSET_VERSION } from '@/vars'
+    import { MCASSET_VERSION } from '../../vars'
+
+    import Fonts from "../../fonts"
 
     @Component({
         components: {
@@ -234,11 +236,10 @@
         }
 
         mounted(): void {
-            fetch('https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + MCASSET_VERSION + '/assets/minecraft/font/default.json').then((res) => res.json()).then((data) => {
-                this.addFont("minecraft:default", data);
-            })
-            fetch('https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + MCASSET_VERSION + '/assets/minecraft/font/alt.json').then((res) => res.json()).then((data) => {
-                this.addFont("minecraft:alt", data);
+            FONTS.forEach((font: any) => {
+                fetch(font.data).then((res) => res.json()).then((data) => {
+                    this.addFont(font.name, data);
+                });
             })
         }
     }
