@@ -120,7 +120,7 @@
             return '/font_data/' + this.fontNamespace() + '/' + this.fontName() + '/c' + c.charCodeAt(0) + '.png'
         }
 
-        charStyle(c: string, fontData: any, previewScale: number) {
+        charStyle(c: string, fontData: any, previewScale: number, isBoldChar: boolean) {
             if (!previewScale) {
                 previewScale = 2;
             }
@@ -150,8 +150,13 @@
 
             let transforms = '';
             if (this.bold) {
-                //TODO: figure out a way to make an image bold...
                 // Minecraft does it a bit sneaky by rendering the char twice, the second one with a +1x offset
+                // So let's just do the same! :D
+                if(isBoldChar) {
+                    style.marginLeft = previewScale + "px"
+                }else{
+                    style.marginRight = (2 * previewScale) + "px";
+                }
             }
             if (this.italic) {
                 transforms += "skew(-10deg) ";

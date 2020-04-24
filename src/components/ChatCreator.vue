@@ -44,7 +44,9 @@
                   <template v-for="(component, compIndex) in components" v-bind:style="component.compStyle()">
                     <!-- Iterate all characters -->
                     <!-- Swap IMG with BR for line breaks -->
-                    <component v-for="(t, ti) in component.text" :key="component.index + '_' + ti" v-bind:title="t" v-bind:is="isLineBreak(t) ? 'br' : 'img'" class="char-container" v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale)" :data-char-code="t.charCodeAt(0)">
+                    <component v-for="(t, ti) in component.text" :key="component.index + '_' + ti" v-bind:title="t" v-bind:is="isLineBreak(t) ? 'br' : 'div'" class="char-container" v-bind:style="component.charStyle(t, fontData, previewScale)" :data-char-code="t.charCodeAt(0)">
+                      <img v-if="!isLineBreak(t)" v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale)" class="base-char"/>
+                      <img v-if="!isLineBreak(t) && component.bold"  v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale, true)" class="bold-char"/>
                     </component>
                   </template>
                 </div>
@@ -129,6 +131,13 @@
     display: inline-block;
     padding: 0;
     margin: 0;
+  }
+
+  .base-char{
+    position:absolute;
+  }
+  .bold-char{
+    position:absolute;
   }
 
   .char-container-break {
