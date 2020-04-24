@@ -175,6 +175,10 @@
                 image: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + MCASSET_VERSION + '/assets/minecraft/textures/block/dirt.png',
                 color: '#a5522a'
             },
+            grass: {
+                image: 'https://i.imgur.com/AQeXKzD.png',
+                color: '#1bba12'
+            },
             stone: {
                 image: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + MCASSET_VERSION + '/assets/minecraft/textures/block/stone.png',
                 color: '#838383'
