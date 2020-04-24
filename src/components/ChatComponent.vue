@@ -20,7 +20,7 @@
           <md-checkbox name="strikethrough" v-model="strikethrough" @change="strikethroughChange">Strikethrough</md-checkbox>
       </div>
       <div class="md-layout">
-          <md-checkbox name="obfuscated" v-model="obfuscated" @change="obfuscatedChange">Obfuscated</md-checkbox>
+          <md-checkbox name="obfuscated" v-model="obfuscated" @change="obfuscatedChange" disabled="">Obfuscated</md-checkbox>
       </div>
     </div>
     <md-field>
@@ -70,6 +70,8 @@
         strikethrough: boolean = false
         obfuscated: boolean = false
         color_ = '#ffffff';
+
+        shadow: boolean = true
 
         filter = 'saturate(1)'
 
@@ -140,7 +142,7 @@
             return style;
         }
 
-        charStyle(c: string, fontData: any, previewScale: number, isBoldChar: boolean) {
+        charStyle(c: string, fontData: any, previewScale: number, isBoldChar: boolean = false, isShadowChar: boolean = false) {
             if (!previewScale) {
                 previewScale = 2;
             }
@@ -154,10 +156,18 @@
                 // 'filter': this.filter,
                 // Char stuff
                 height: height + "px",
+                marginLeft: 0,
+                marginTop: 0,
+                marginRight: 0
             };
 
             if (width > 0) {
                 style.width = width+"px";
+            }
+
+            if (this.shadow && isShadowChar) {
+                style.marginLeft += previewScale
+                style.marginTop += previewScale
             }
 
             let transforms = '';
@@ -165,9 +175,9 @@
                 // Minecraft does it a bit sneaky by rendering the char twice, the second one with a +1x offset
                 // So let's just do the same! :D
                 if(isBoldChar) {
-                    style.marginLeft = previewScale + "px"
+                    style.marginLeft += previewScale
                 }else{
-                    style.marginRight = (2 * previewScale) + "px";
+                    style.marginRight += (2 * previewScale)
                 }
             }
             if (this.italic) {
@@ -177,6 +187,11 @@
 //TODO
             }
             style.transform = transforms;
+
+
+            style.marginRight += "px";
+            style.marginLeft+="px"
+            style.marginTop += "px";
 
             return style;
         }
