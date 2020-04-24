@@ -142,12 +142,48 @@
             return style;
         }
 
-        charStyle(c: string, fontData: any, previewScale: number, isBoldChar: boolean = false, isShadowChar: boolean = false) {
+        underlineStrikethroughStyle(c: string, fontData: any, previewScale: number, isStrikethrough: boolean = false, isShadowChar: boolean = false) {
             if (!previewScale) {
                 previewScale = 2;
             }
             console.log(fontData);
             const size = fontData[this.font].sizes["" + c.charCodeAt(0)];
+            const height = 8  * previewScale;
+            const width = (size ? size.width: 0) * previewScale;
+
+            const style: any = {
+                width: (width+(previewScale*2)) + "px",// char width + right overlap
+                height: height+"px",
+                marginLeft: (-previewScale)+"px",// left overlap
+                marginTop: 0,
+            };
+
+            let filter = this.filter;
+            if (this.shadow && isShadowChar) {
+                style.marginLeft += previewScale
+                style.marginTop += previewScale
+
+                filter +=" brightness(0.35)"
+            }
+
+            if (this.underlined && !isStrikethrough) {
+                style.marginTop = (2*previewScale)+"px"
+            }
+            if (this.strikethrough && isStrikethrough) {
+                style.marginTop =  previewScale+"px"
+            }
+
+            style.filter = filter;
+
+            return style;
+        }
+
+        charStyle(c: string, fontData: any, previewScale: number, isBoldChar: boolean = false, isShadowChar: boolean = false) {
+            if (!previewScale) {
+                previewScale = 2;
+            }
+            console.log(fontData);
+            const size = c.length > 0 ? null : fontData[this.font].sizes["" + c.charCodeAt(0)];
             const height = (size ? size.height : 8)  * previewScale;
             const width = (size ? size.width: 0) * previewScale;
 
@@ -186,8 +222,11 @@
             if (this.italic) {
                 transforms += "skew(-10deg) ";
             }
-            if (this.underlined) {
-//TODO
+            if (this.underlined && c === "underline") {
+                style.marginTop += (2*previewScale);
+            }
+            if (this.strikethrough && c === "strikethrough") {
+                style.marginTop += previewScale;
             }
             style.transform = transforms;
 
