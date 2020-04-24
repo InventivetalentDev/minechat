@@ -146,7 +146,7 @@
   }
   .shadow-char{
     position: absolute;
-    filter: brightness(0.4);
+    filter: brightness(0.35);
   }
 
   .char-container-break {
