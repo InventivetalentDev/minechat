@@ -63,7 +63,7 @@
                     <!-- Swap IMG with BR for line breaks -->
                     <component v-for="(t, ti) in component.text" :key="component.index + '_' + ti" v-bind:title="t" v-bind:is="isLineBreak(t) ? 'br' : 'div'" class="char-container" v-bind:style="component.charContainerStyle(t, fontData, previewScale)" :data-char-code="t.charCodeAt(0)">
                       <img v-if="!isLineBreak(t) && component.shadow"  v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale, false, true)" class="shadow-char"/>
-                      <img v-if="!isLineBreak(t) && component.shadow"  v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale, true, true)" class="shadow-char"/>
+                      <img v-if="!isLineBreak(t) && component.shadow && component.bold"  v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale, true, true)" class="shadow-char"/>
                       <img v-if="!isLineBreak(t) && component.bold"  v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale, true, false)" class="bold-char"/>
                       <img v-if="!isLineBreak(t)" v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale)" class="base-char"/>
                     </component>

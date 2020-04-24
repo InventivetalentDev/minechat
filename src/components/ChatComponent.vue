@@ -131,7 +131,7 @@
             const width = (size ? size.width: 0) * previewScale;
 
             const style: any = {
-                filter: this.filter,
+                // filter: this.filter,
                 height: height + "px",
                 marginRight: ((this.bold ? 2:1) *  previewScale) + "px"
             };
@@ -165,9 +165,12 @@
                 style.width = width+"px";
             }
 
+            let filter = this.filter;
             if (this.shadow && isShadowChar) {
                 style.marginLeft += previewScale
                 style.marginTop += previewScale
+
+                filter +=" brightness(0.35)"
             }
 
             let transforms = '';
@@ -188,6 +191,7 @@
             }
             style.transform = transforms;
 
+            style.filter = filter;
 
             style.marginRight += "px";
             style.marginLeft+="px"
