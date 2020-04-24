@@ -39,6 +39,23 @@
               <div class="md-title">Preview</div>
             </md-card-header>
             <md-card-content>
+              <div class="md-layout md-gutter">
+                <div class="md-layout-item">
+                  <md-field>
+                    <label for="font">Background</label>
+                    <md-select name="font" v-model="backgroundTexture" @md-selected="backgroundTextureChange">
+                      <md-option v-for="(bg, bi) in backgroundTextureKeys" v-bind:value="bg" v-bind:key="bi">{{ bg }}</md-option>
+                    </md-select>
+                  </md-field>
+                </div>
+                <div class="md-layout-item">
+                  <md-field>
+                    <label for="previewScale">Preview Scale</label>
+                    <md-input name="previewScale" type="number" v-model.number="previewScale"></md-input>
+                  </md-field>
+                </div>
+              </div>
+
               <div class="text-background" v-bind:style="backgroundStyle()">
                 <div class="text-renderer">
                   <template v-for="(component, compIndex) in components" v-bind:style="component.compStyle()">
@@ -51,26 +68,12 @@
                   </template>
                 </div>
               </div>
-              <br/>
-             <div class="md-layout md-gutter">
-               <div class="md-layout-item">
-                 <md-field>
-                   <label for="font">Background</label>
-                   <md-select name="font" v-model="backgroundTexture" @md-selected="backgroundTextureChange">
-                     <md-option v-for="(bg, bi) in backgroundTextureKeys" v-bind:value="bg" v-bind:key="bi">{{ bg }}</md-option>
-                   </md-select>
-                 </md-field>
-               </div>
-               <div class="md-layout-item">
-                 <md-field>
-                   <label for="previewScale">Preview Scale</label>
-                   <md-input name="previewScale" type="number" v-model.number="previewScale"></md-input>
-                 </md-field>
-               </div>
+
+             <div>
+               <code>
+                 <pre>{{ componentJson }}</pre>
+               </code>
              </div>
-              <code>
-                <pre>{{ componentJson }}</pre>
-              </code>
             </md-card-content>
           </md-card>
         </div>
