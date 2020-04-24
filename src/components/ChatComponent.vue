@@ -120,6 +120,26 @@
             return '/font_data/' + this.fontNamespace() + '/' + this.fontName() + '/c' + c.charCodeAt(0) + '.png'
         }
 
+        charContainerStyle(c: string, fontData: any, previewScale: number) {
+            if (!previewScale) {
+                previewScale = 2;
+            }
+            const size = fontData[this.font].sizes["" + c.charCodeAt(0)];
+            const height = (size ? size.height : 8)  * previewScale;
+            const width = (size ? size.width: 0) * previewScale;
+
+            const style: any = {
+                filter: this.filter,
+                height: height + "px",
+                marginRight: ((this.bold ? 2:1) *  previewScale) + "px"
+            };
+            if (width > 0) {
+                style.width = width+"px";
+            }
+
+            return style;
+        }
+
         charStyle(c: string, fontData: any, previewScale: number, isBoldChar: boolean) {
             if (!previewScale) {
                 previewScale = 2;
@@ -131,17 +151,9 @@
 
             const style: any = {
                 // Component stuff
-                'filter': this.filter,
-                backgroundBlendMode: 'multiply',
-                backgroundRepeat: 'no-repeat',
-                // background: 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("/font_data/minecraft/default/c' + c.charCodeAt(0) + '.png")',
-                // backgroundPosition: '0px 0px',
-                // backgroundSize: size + ' ' + size,
-                // width: size,
+                // 'filter': this.filter,
                 // Char stuff
                 height: height + "px",
-                display: 'inline-block',
-                marginRight: previewScale + "px"
             };
 
             if (width > 0) {
@@ -162,7 +174,7 @@
                 transforms += "skew(-10deg) ";
             }
             if (this.underlined) {
-
+//TODO
             }
             style.transform = transforms;
 
