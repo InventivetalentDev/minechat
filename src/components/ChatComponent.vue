@@ -148,7 +148,7 @@
             }
             console.log(fontData);
             const size = fontData[this.font].sizes["" + c.charCodeAt(0)];
-            const height = 8  * previewScale;
+            const height = (size ? size.height : 8)  * previewScale;
             const width = (size ? size.width: 0) * previewScale;
 
             const style: any = {
