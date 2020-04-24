@@ -183,7 +183,7 @@
                 previewScale = 2;
             }
             console.log(fontData);
-            const size = c.length > 0 ? null : fontData[this.font].sizes["" + c.charCodeAt(0)];
+            const size =  fontData[this.font].sizes["" + c.charCodeAt(0)];
             const height = (size ? size.height : 8)  * previewScale;
             const width = (size ? size.width: 0) * previewScale;
 
