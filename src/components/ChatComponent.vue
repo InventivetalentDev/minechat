@@ -127,8 +127,15 @@
                 previewScale = 2;
             }
             const size = fontData[this.font].sizes["" + c.charCodeAt(0)];
-            const height = (size ? size.height : 8)  * previewScale;
+            let height = (size ? size.height : 8)  * previewScale;
             const width = (size ? size.width: 0) * previewScale;
+
+            if (this.shadow) {
+                height+=previewScale;
+            }
+            if (this.underlined) {
+                height += (previewScale*2);
+            }
 
             const style: any = {
                 // filter: this.filter,
