@@ -154,7 +154,7 @@
             const style: any = {
                 width: (width+(previewScale*2)) + "px",// char width + right overlap
                 height: height+"px",
-                marginLeft: (-previewScale)+"px",// left overlap
+                marginLeft: (-previewScale), // left overlap
                 marginTop: 0,
             };
 
@@ -167,13 +167,17 @@
             }
 
             if (this.underlined && !isStrikethrough) {
-                style.marginTop = (2*previewScale)+"px"
+                style.marginTop += (2*previewScale)
             }
             if (this.strikethrough && isStrikethrough) {
-                style.marginTop =  previewScale+"px"
+                style.marginTop +=  previewScale
             }
 
             style.filter = filter;
+
+            style.marginRight += "px";
+            style.marginLeft+="px"
+            style.marginTop += "px";
 
             return style;
         }
