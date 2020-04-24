@@ -15,7 +15,7 @@
                 <br/>
                 <ChatComponent v-bind:index="comp.index" v-bind:arr-index="arrIndex" v-bind:available-fonts="availableFonts"
                                @textChange="onText" @fontChange="onFont" @colorChange="onColor"
-                               @boldChange="onBold" @italicChange="onItalic" @underlinedChange="onUnderlined" @strikethroughChange="onStrikethrough" @obfuscatedChange="onObfuscated"
+                               @boldChange="onBold" @italicChange="onItalic" @underlineChange="onUnderlined" @strikethroughChange="onStrikethrough" @obfuscatedChange="onObfuscated"
                                @removeComponent="removeComponent">
                   <!--      <component :is="item" :key="index"></component>-->
                 </ChatComponent>
