@@ -186,6 +186,10 @@
             snow: {
                 image: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + MCASSET_VERSION + '/assets/minecraft/textures/block/snow.png',
                 color: '#f5f5f5'
+            },
+            obsidian: {
+                image: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + MCASSET_VERSION + '/assets/minecraft/textures/block/obsidian.png',
+                color: '#222222'
             }
         };
         backgroundTexture: string = 'stone';
