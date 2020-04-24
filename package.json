@@ -2,6 +2,7 @@
   "name": "minechat",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "serve": "npm run compile-vars && vue-cli-service serve",
     "build": "npm run compile-vars && vue-cli-service build",
