@@ -6,6 +6,23 @@
       <label for="text">Text</label>
       <md-textarea name="text" type="text" v-model="text" @keyup="textChange"></md-textarea>
     </md-field>
+    <div class="md-layout">
+      <div class="md-layout">
+          <md-checkbox name="bold" v-model="bold" @change="boldChange">Bold</md-checkbox>
+      </div>
+      <div class="md-layout">
+          <md-checkbox name="italic" v-model="italic" @change="italicChange">Italic</md-checkbox>
+      </div>
+      <div class="md-layout">
+          <md-checkbox name="underlined" v-model="underlined" @change="underlineChange">Underlined</md-checkbox>
+      </div>
+      <div class="md-layout">
+          <md-checkbox name="strikethrough" v-model="strikethrough" @change="strikethroughChange">Strikethrough</md-checkbox>
+      </div>
+      <div class="md-layout">
+          <md-checkbox name="obfuscated" v-model="obfuscated" @change="obfuscatedChange">Obfuscated</md-checkbox>
+      </div>
+    </div>
     <md-field>
       <label for="font">Font</label>
       <md-select name="font" v-model="font" @md-selected="fontChange">
@@ -47,6 +64,11 @@
         @Prop(Array) availableFonts!: string[]
         text = 'test';
         font = 'minecraft:default';
+        italic: boolean = false
+        bold: boolean = false
+        underlined: boolean = false
+        strikethrough: boolean = false
+        obfuscated: boolean = false
         color_ = '#ffffff';
 
         filter = 'saturate(1)'
@@ -104,10 +126,10 @@
             }
             console.log(fontData);
             const size = fontData[this.font].sizes["" + c.charCodeAt(0)];
-            const height = /*(size ? size.height : 8) * scale*/ 8*previewScale;
-            /// COLORS https://codepen.io/sosuke/pen/Pjoqqp
-            //  https://stackoverflow.com/questions/42966641/how-to-transform-black-into-any-given-color-using-only-css-filters/43960991#43960991
-            return {
+            const height = (size ? size.height : 8)  * previewScale;
+            const width = (size ? size.width: 0) * previewScale;
+
+            const style: any = {
                 // Component stuff
                 'filter': this.filter,
                 backgroundBlendMode: 'multiply',
@@ -119,8 +141,27 @@
                 // Char stuff
                 height: height + "px",
                 display: 'inline-block',
-                paddingRight: previewScale+"px"
+                marginRight: previewScale + "px"
+            };
+
+            if (width > 0) {
+                style.width = width+"px";
             }
+
+            let transforms = '';
+            if (this.bold) {
+                //TODO: figure out a way to make an image bold...
+                // Minecraft does it a bit sneaky by rendering the char twice, the second one with a +1x offset
+            }
+            if (this.italic) {
+                transforms += "skew(-10deg) ";
+            }
+            if (this.underlined) {
+
+            }
+            style.transform = transforms;
+
+            return style;
         }
 
 
@@ -130,7 +171,12 @@
                 _aidx: this.arrIndex || -1,
                 text: this.text,
                 color: this.color,
-                font: this.font
+                font: this.font,
+                bold: this.bold,
+                underlined: this.underlined,
+                italic: this.italic,
+                strikethrough: this.strikethrough,
+                obfuscated: this.obfuscated
             }
         }
 
@@ -148,6 +194,26 @@
             window.console.log('colorChange')
             this.filter = this.filterColor()
             this.$emit('colorChange', { index: this.arrIndex, value: this.color })
+        }
+
+        boldChange(){
+            this.$emit('boldChange', {index: this.arrIndex, value: this.bold})
+        }
+
+        italicChange(){
+            this.$emit('italicChange', {index: this.arrIndex, value: this.italic})
+        }
+
+        underlineChange(){
+            this.$emit('underlineChange', {index: this.arrIndex, value: this.underlined})
+        }
+
+        strikethroughChange(){
+            this.$emit('strikethroughChange', {index: this.arrIndex, value: this.strikethrough})
+        }
+
+        obfuscatedChange(){
+            this.$emit('obfuscatedChange', {index: this.arrIndex, value: this.obfuscated})
         }
 
         removeSelf() {

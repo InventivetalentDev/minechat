@@ -68,7 +68,8 @@ async function doStuff () {
             sec = cropAlphaRight(sec, 0.1)
           // There's also a 'height' property, which seems to specify the section heights
             sizes[charCode] = {
-              height: sec.height
+              height: sec.height,
+              width: sec.width
             }
             let sav = path.join(fontDir, /*path.basename(file)+*/ 'c' + charCode + '.png')
             if (fs.existsSync(sav)) {

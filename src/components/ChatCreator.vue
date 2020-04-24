@@ -13,7 +13,10 @@
             <md-card-content>
               <div v-for="(comp, arrIndex) in components" :key="comp.index">
                 <br/>
-                <ChatComponent v-bind:index="comp.index" v-bind:arr-index="arrIndex" v-bind:available-fonts="availableFonts" @textChange="onText" @fontChange="onFont" @colorChange="onColor" @removeComponent="removeComponent">
+                <ChatComponent v-bind:index="comp.index" v-bind:arr-index="arrIndex" v-bind:available-fonts="availableFonts"
+                               @textChange="onText" @fontChange="onFont" @colorChange="onColor"
+                               @boldChange="onBold" @italicChange="onItalic" @underlinedChange="onUnderlined" @strikethroughChange="onStrikethrough" @obfuscatedChange="onObfuscated"
+                               @removeComponent="removeComponent">
                   <!--      <component :is="item" :key="index"></component>-->
                 </ChatComponent>
                 <br/>
@@ -41,7 +44,7 @@
                   <template v-for="(component, compIndex) in components" v-bind:style="component.compStyle()">
                     <!-- Iterate all characters -->
                     <!-- Swap IMG with BR for line breaks -->
-                    <component v-for="(t, ti) in component.text" :key="component.index + '_' + ti" v-bind:title="t" v-bind:is="isLineBreak(t) ? 'br' : 'img'" class="char-container" v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale)">
+                    <component v-for="(t, ti) in component.text" :key="component.index + '_' + ti" v-bind:title="t" v-bind:is="isLineBreak(t) ? 'br' : 'img'" class="char-container" v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale)" :data-char-code="t.charCodeAt(0)">
                     </component>
                   </template>
                 </div>
@@ -230,6 +233,26 @@
         onColor(data: any) {
             window.console.log('onColor: ' + JSON.stringify(data))
             this.setCompProp(data.index, 'color', data.value)
+        }
+
+        onBold(data: any) {
+            this.setCompProp(data.index, 'bold', data.value)
+        }
+
+        onItalic(data: any) {
+            this.setCompProp(data.index, 'italic', data.value)
+        }
+
+        onUnderlined(data: any) {
+            this.setCompProp(data.index, 'underlined', data.value)
+        }
+
+        onStrikethrough(data: any) {
+            this.setCompProp(data.index, 'strikethrough', data.value)
+        }
+
+        onObfuscated(data: any) {
+            this.setCompProp(data.index, 'obfuscated', data.value)
         }
 
         removeComponent(data: any) {
