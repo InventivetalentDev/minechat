@@ -69,6 +69,24 @@
             </md-card-content>
           </md-card>
         </div>
+
+        <br/>
+
+        <div class="about">
+          <md-card md-with-hover>
+            <md-card-header>
+              <div class="md-title">About</div>
+            </md-card-header>
+            <md-card-content>
+              <div>
+                This is a tool to generate Minecraft chat components, primarily for the new color & font options introduced in the <a href="https://www.minecraft.net/de-de/article/minecraft-snapshot-20w17a" target="_blank">20w17a snapshot</a>.<br/>
+                It's still a work-in-progress, so please bear with me while I'm changing stuff :) <br/>
+                <br/>
+                Made by <a href="https://inventivetalent.org" target="_blank">inventivetalent</a>
+              </div>
+            </md-card-content>
+          </md-card>
+        </div>
       </div>
 
     </div>
