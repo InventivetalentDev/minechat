@@ -170,7 +170,7 @@
             }
         }
 
-        charContainerStyle(c: string, fontData: any, previewScale: number, hasAnyUnderlineOrStrikethrough: boolean = false ) {
+        charContainerStyle(c: string, fontData: any, previewScale: number, hasAnyUnderlineOrStrikethrough: boolean = false, shadow: boolean = true) {
             if (!previewScale) {
                 previewScale = DEFAULT_PREVIEW_SCALE;
             }
@@ -195,7 +195,7 @@
             return style;
         }
 
-        underlineStrikethroughStyle(c: string, fontData: any, previewScale: number, isStrikethrough: boolean = false, isShadowChar: boolean = false) {
+        underlineStrikethroughStyle(c: string, fontData: any, previewScale: number, isStrikethrough: boolean = false, isShadowChar: boolean = false, shadow: boolean = true) {
             if (!previewScale) {
                 previewScale = DEFAULT_PREVIEW_SCALE;
             }
@@ -209,7 +209,7 @@
             };
 
             let filter = this.filter;
-            if (this.shadow && isShadowChar) {
+            if (shadow && isShadowChar) {
                 style.marginLeft += previewScale
                 style.marginTop += previewScale
 
@@ -232,7 +232,7 @@
             return style;
         }
 
-        charStyle(c: string, fontData: any, previewScale: number, isBoldChar: boolean = false, isShadowChar: boolean = false) {
+        charStyle(c: string, fontData: any, previewScale: number, isBoldChar: boolean = false, isShadowChar: boolean = false, shadow: boolean = true) {
             if (!previewScale) {
                 previewScale = DEFAULT_PREVIEW_SCALE;
             }
@@ -253,7 +253,7 @@
             }
 
             let filter = this.filter;
-            if (this.shadow && isShadowChar) {
+            if (shadow && isShadowChar) {
                 style.marginLeft += previewScale/fontSizeMultiplier
                 style.marginTop += previewScale
 

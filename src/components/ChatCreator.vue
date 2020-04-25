@@ -54,6 +54,11 @@
                     <md-input name="previewScale" type="number" v-model.number="previewScale"></md-input>
                   </md-field>
                 </div>
+                <div class="md-layout-item">
+                  <div class="md-layout">
+                    <md-checkbox name="shadow" v-model="shadow" >Shadow</md-checkbox>
+                  </div>
+                </div>
               </div>
 
               <div class="text-background" v-bind:style="backgroundStyle()">
@@ -61,22 +66,22 @@
                   <template v-for="(component, compIndex) in components" v-bind:style="component.compStyle()">
                     <!-- Iterate all characters -->
                     <!-- Swap IMG with BR for line breaks -->
-                    <component v-for="(t, ti) in component.text" :key="component.index + '_' + ti" v-bind:title="t" v-bind:is="isLineBreak(t) ? 'br' : 'div'" class="char-container" v-bind:style="component.charContainerStyle(t, fontData, previewScale, hasUnderlineOrStrikethrough())" :data-char-code="t.charCodeAt(0)">
+                    <component v-for="(t, ti) in component.text" :key="component.index + '_' + ti" v-bind:title="t" v-bind:is="isLineBreak(t) ? 'br' : 'div'" class="char-container" v-bind:style="component.charContainerStyle(t, fontData, previewScale, hasUnderlineOrStrikethrough(), shadow)" :data-char-code="t.charCodeAt(0)">
                       <!-- Stuff rendered in background -->
                       <!---- Shadows ---->
-                      <img v-if="!isLineBreak(t) && component.shadow"  v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale, false, true)" class="shadow-char"/>
-                      <img v-if="!isLineBreak(t) && component.shadow && component.bold"  v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale, true, true)" class="shadow-char"/>
-                      <img v-if="!isLineBreak(t) && component.shadow && component.strikethrough" src="font_data/strikethrough.png" v-bind:style="component.underlineStrikethroughStyle(t, fontData, previewScale, true, true)"  class="shadow-char strikethrough-overlay"/>
-                      <img v-if="!isLineBreak(t) && component.shadow && component.underlined" src="font_data/underline.png" v-bind:style="component.underlineStrikethroughStyle(t, fontData, previewScale, false, true)"  class="shadow-char underline-overlay"/>
+                      <img v-if="!isLineBreak(t) && shadow"  v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale, false, true, shadow)" class="shadow-char"/>
+                      <img v-if="!isLineBreak(t) && shadow && component.bold"  v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale, true, true, shadow)" class="shadow-char"/>
+                      <img v-if="!isLineBreak(t) && shadow && component.strikethrough" src="font_data/strikethrough.png" v-bind:style="component.underlineStrikethroughStyle(t, fontData, previewScale, true, true, shadow)"  class="shadow-char strikethrough-overlay"/>
+                      <img v-if="!isLineBreak(t) && shadow && component.underlined" src="font_data/underline.png" v-bind:style="component.underlineStrikethroughStyle(t, fontData, previewScale, false, true, shadow)"  class="shadow-char underline-overlay"/>
                       <!---- Boldness ---->
-                      <img v-if="!isLineBreak(t) && component.bold"  v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale, true, false)" class="bold-char"/>
+                      <img v-if="!isLineBreak(t) && component.bold"  v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale, true, false, shadow)" class="bold-char"/>
 
                       <!-- Actual character -->
-                      <img v-if="!isLineBreak(t)" v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale)" class="base-char"/>
+                      <img v-if="!isLineBreak(t)" v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale, false, false, shadow)" class="base-char"/>
 
                       <!-- Foreground elements -->
-                      <img v-if="!isLineBreak(t) && component.strikethrough" src="font_data/strikethrough.png" v-bind:style="component.underlineStrikethroughStyle(t, fontData, previewScale, true)"  class="strikethrough-overlay"/>
-                      <img v-if="!isLineBreak(t) && component.underlined" src="font_data/underline.png" v-bind:style="component.underlineStrikethroughStyle(t, fontData, previewScale, false)"  class="underline-overlay"/>
+                      <img v-if="!isLineBreak(t) && component.strikethrough" src="font_data/strikethrough.png" v-bind:style="component.underlineStrikethroughStyle(t, fontData, previewScale, true, false, shadow)"  class="strikethrough-overlay"/>
+                      <img v-if="!isLineBreak(t) && component.underlined" src="font_data/underline.png" v-bind:style="component.underlineStrikethroughStyle(t, fontData, previewScale, false, false, shadow)"  class="underline-overlay"/>
                     </component>
                   </template>
                 </div>
@@ -218,7 +223,8 @@
 
         packLinks: any = {};
 
-        previewScale: number = DEFAULT_PREVIEW_SCALE
+        previewScale: number = DEFAULT_PREVIEW_SCALE;
+        shadow: boolean = true;
         //
         // @Watch('components', { deep: true })
         // componentChanged (val: any, oldVal: any) {
