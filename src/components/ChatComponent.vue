@@ -32,10 +32,30 @@
       <a v-bind:href="packLinks[font]" target="_blank">Resource Pack Link</a>
     </span>
     </md-field>
-    <div>
-      <label for="color">Color</label>
-      <!--      <md-input name="color" type="text" v-model="color" @keyup="colorChange"></md-input>-->
-      <Chrome v-model="color" name="color" :disable-alpha="true" @input="colorChange"></Chrome>
+    <div class="md-layout">
+      <div class="md-layout-item">
+        <label for="color">Color</label>
+        <!--      <md-input name="color" type="text" v-model="color" @keyup="colorChange"></md-input>-->
+        <Chrome v-model="color" name="color" :disable-alpha="true" @input="colorChange"></Chrome>
+      </div>
+      <div class="md-layout-item">
+        <md-button @click="setColor('#000000')" style="background-color: #000000; color: white;">(§0) Black</md-button>
+        <md-button @click="setColor('#0000AA')" style="background-color: #0000AA; color: white;">(§1) Dark Blue</md-button>
+        <md-button @click="setColor('#00AA00')" style="background-color: #00AA00; ">(§2) Dark Green</md-button>
+        <md-button @click="setColor('#00AAAA')" style="background-color: #00AAAA; ">(§3) Dark Aqua</md-button>
+        <md-button @click="setColor('#AA0000')" style="background-color: #AA0000; ">(§4) Dark Red</md-button>
+        <md-button @click="setColor('#AA00AA')" style="background-color: #AA00AA; ">(§5) Dark Purple</md-button>
+        <md-button @click="setColor('#FFAA00')" style="background-color: #FFAA00; ">(§6) Gold</md-button>
+        <md-button @click="setColor('#AAAAAA')" style="background-color: #AAAAAA; ">(§7) Gray</md-button>
+        <md-button @click="setColor('#555555')" style="background-color: #555555; ">(§8) Dark Gray</md-button>
+        <md-button @click="setColor('#5555FF')" style="background-color: #5555FF; ">(§9) Blue</md-button>
+        <md-button @click="setColor('#55FF55')" style="background-color: #55FF55; ">(§a) Green</md-button>
+        <md-button @click="setColor('#55FFFF')" style="background-color: #55FFFF; ">(§b) Aqua</md-button>
+        <md-button @click="setColor('#FF5555')" style="background-color: #FF5555; ">(§c) Red</md-button>
+        <md-button @click="setColor('#FF55FF')" style="background-color: #FF55FF; ">(§d) Light Purple</md-button>
+        <md-button @click="setColor('#FFFF55')" style="background-color: #FFFF55; ">(§e) Yellow</md-button>
+        <md-button @click="setColor('#FFFFFF')" style="background-color: #FFFFFF; ">(§f) White</md-button>
+      </div>
     </div>
   </div>
 </template>
@@ -91,6 +111,11 @@
                 this.color_ = v.hex
             }
             this.filter = this.filterColor()
+        }
+
+        setColor(v: string) {
+            this.color = v;
+            this.colorChange();
         }
 
         filterColor() {
