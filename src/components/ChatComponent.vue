@@ -8,19 +8,19 @@
     </md-field>
     <div class="md-layout">
       <div class="md-layout">
-          <md-checkbox name="bold" v-model="bold" @change="boldChange">Bold</md-checkbox>
+        <md-checkbox name="bold" v-model="bold" @change="boldChange">Bold</md-checkbox>
       </div>
       <div class="md-layout">
-          <md-checkbox name="italic" v-model="italic" @change="italicChange">Italic</md-checkbox>
+        <md-checkbox name="italic" v-model="italic" @change="italicChange">Italic</md-checkbox>
       </div>
       <div class="md-layout">
-          <md-checkbox name="underlined" v-model="underlined" @change="underlineChange">Underlined</md-checkbox>
+        <md-checkbox name="underlined" v-model="underlined" @change="underlineChange">Underlined</md-checkbox>
       </div>
       <div class="md-layout">
-          <md-checkbox name="strikethrough" v-model="strikethrough" @change="strikethroughChange">Strikethrough</md-checkbox>
+        <md-checkbox name="strikethrough" v-model="strikethrough" @change="strikethroughChange">Strikethrough</md-checkbox>
       </div>
       <div class="md-layout">
-          <md-checkbox name="obfuscated" v-model="obfuscated" @change="obfuscatedChange" disabled="">Obfuscated</md-checkbox>
+        <md-checkbox name="obfuscated" v-model="obfuscated" @change="obfuscatedChange" disabled="">Obfuscated</md-checkbox>
       </div>
     </div>
     <md-field>
@@ -45,7 +45,7 @@
 
 <script lang="ts">
     import { Component, Emit, Model, Prop, PropSync, Provide, Vue } from 'vue-property-decorator'
-    import { MCASSET_VERSION } from '../../vars'
+    import { MCASSET_VERSION, BASE_FONT } from '../../vars'
     import Material from 'vue-color/src/components/Material.vue'
     import Chrome from 'vue-color/src/components/Chrome.vue'
 
@@ -122,28 +122,43 @@
             return '/font_data/' + this.fontNamespace() + '/' + this.fontName() + '/c' + c.charCodeAt(0) + '.png'
         }
 
+        fontMetrics(c: string, fontData: any, previewScale: number) {
+            if (!previewScale) {
+                previewScale = 2;
+            }
+            const charCode = c.charCodeAt(0);
+            const baseSize = fontData[BASE_FONT].sizes["" + charCode];
+            const size = fontData[this.font].sizes["" + charCode];
+            const fontSizeMultiplier = (size ? size.height : 8) / (baseSize ? baseSize.height : 8);
+            let height = (size ? size.height : 8) / fontSizeMultiplier * previewScale;
+            const width = (size ? size.width : 0) / fontSizeMultiplier * previewScale;
+
+            return {
+                width,
+                height
+            }
+        }
+
         charContainerStyle(c: string, fontData: any, previewScale: number) {
             if (!previewScale) {
                 previewScale = 2;
             }
-            const size = fontData[this.font].sizes["" + c.charCodeAt(0)];
-            let height = (size ? size.height : 8)  * previewScale;
-            const width = (size ? size.width: 0) * previewScale;
+            let { width, height } = this.fontMetrics(c, fontData, previewScale);
 
             if (this.shadow) {
-                height+=previewScale;
+                height += previewScale;
             }
             if (this.underlined) {
-                height += (previewScale*2);
+                height += (previewScale * 2);
             }
 
             const style: any = {
                 // filter: this.filter,
                 height: height + "px",
-                marginRight: ((this.bold ? 2:1) *  previewScale) + "px"
+                marginRight: ((this.bold ? 2 : 1) * previewScale) + "px"
             };
             if (width > 0) {
-                style.width = width+"px";
+                style.width = width + "px";
             }
 
             return style;
@@ -153,14 +168,11 @@
             if (!previewScale) {
                 previewScale = 2;
             }
-            console.log(fontData);
-            const size = fontData[this.font].sizes["" + c.charCodeAt(0)];
-            const height = (size ? size.height : 8)  * previewScale;
-            const width = (size ? size.width: 0) * previewScale;
+            let { width, height } = this.fontMetrics(c, fontData, previewScale);
 
             const style: any = {
-                width: (width+(previewScale*2)) + "px",// char width + right overlap
-                height: height+"px",
+                width: (width + (previewScale * 2)) + "px",// char width + right overlap
+                height: height + "px",
                 marginLeft: (-previewScale), // left overlap
                 marginTop: 0,
             };
@@ -170,20 +182,20 @@
                 style.marginLeft += previewScale
                 style.marginTop += previewScale
 
-                filter +=" brightness(0.35)"
+                filter += " brightness(0.35)"
             }
 
             if (this.underlined && !isStrikethrough) {
-                style.marginTop += (2*previewScale)
+                style.marginTop += (2 * previewScale)
             }
             if (this.strikethrough && isStrikethrough) {
-                style.marginTop +=  previewScale
+                style.marginTop += previewScale
             }
 
             style.filter = filter;
 
             style.marginRight += "px";
-            style.marginLeft+="px"
+            style.marginLeft += "px"
             style.marginTop += "px";
 
             return style;
@@ -193,10 +205,7 @@
             if (!previewScale) {
                 previewScale = 2;
             }
-            console.log(fontData);
-            const size =  fontData[this.font].sizes["" + c.charCodeAt(0)];
-            const height = (size ? size.height : 8)  * previewScale;
-            const width = (size ? size.width: 0) * previewScale;
+            let { width, height } = this.fontMetrics(c, fontData, previewScale);
 
             const style: any = {
                 // Component stuff
@@ -209,7 +218,7 @@
             };
 
             if (width > 0) {
-                style.width = width+"px";
+                style.width = width + "px";
             }
 
             let filter = this.filter;
@@ -217,16 +226,16 @@
                 style.marginLeft += previewScale
                 style.marginTop += previewScale
 
-                filter +=" brightness(0.35)"
+                filter += " brightness(0.35)"
             }
 
             let transforms = '';
             if (this.bold) {
                 // Minecraft does it a bit sneaky by rendering the char twice, the second one with a +1x offset
                 // So let's just do the same! :D
-                if(isBoldChar) {
+                if (isBoldChar) {
                     style.marginLeft += previewScale
-                }else{
+                } else {
                     style.marginRight += (2 * previewScale)
                 }
             }
@@ -234,7 +243,7 @@
                 transforms += "skew(-10deg) ";
             }
             if (this.underlined && c === "underline") {
-                style.marginTop += (2*previewScale);
+                style.marginTop += (2 * previewScale);
             }
             if (this.strikethrough && c === "strikethrough") {
                 style.marginTop += previewScale;
@@ -244,7 +253,7 @@
             style.filter = filter;
 
             style.marginRight += "px";
-            style.marginLeft+="px"
+            style.marginLeft += "px"
             style.marginTop += "px";
 
             return style;
@@ -282,24 +291,24 @@
             this.$emit('colorChange', { index: this.arrIndex, value: this.color })
         }
 
-        boldChange(){
-            this.$emit('boldChange', {index: this.arrIndex, value: this.bold})
+        boldChange() {
+            this.$emit('boldChange', { index: this.arrIndex, value: this.bold })
         }
 
-        italicChange(){
-            this.$emit('italicChange', {index: this.arrIndex, value: this.italic})
+        italicChange() {
+            this.$emit('italicChange', { index: this.arrIndex, value: this.italic })
         }
 
-        underlineChange(){
-            this.$emit('underlineChange', {index: this.arrIndex, value: this.underlined})
+        underlineChange() {
+            this.$emit('underlineChange', { index: this.arrIndex, value: this.underlined })
         }
 
-        strikethroughChange(){
-            this.$emit('strikethroughChange', {index: this.arrIndex, value: this.strikethrough})
+        strikethroughChange() {
+            this.$emit('strikethroughChange', { index: this.arrIndex, value: this.strikethrough })
         }
 
-        obfuscatedChange(){
-            this.$emit('obfuscatedChange', {index: this.arrIndex, value: this.obfuscated})
+        obfuscatedChange() {
+            this.$emit('obfuscatedChange', { index: this.arrIndex, value: this.obfuscated })
         }
 
         removeSelf() {
