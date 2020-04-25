@@ -28,10 +28,10 @@
       <md-select name="font" v-model="font" @md-selected="fontChange">
         <md-option v-for="(font, fi) in availableFonts" v-bind:value="font" v-bind:key="fi">{{ font }}</md-option>
       </md-select>
+      <span class="md-suffix" v-if="!font.startsWith('minecraft:') && packLinks.hasOwnProperty(font)">
+      <a v-bind:href="packLinks[font]" target="_blank">Resource Pack Link</a>
+    </span>
     </md-field>
-    <div v-if="!font.startsWith('minecraft:') && packLinks.hasOwnProperty(font)">
-      <a v-bind:href="packLinks[font]" target="_blank">Resource Pack</a>
-    </div>
     <div>
       <label for="color">Color</label>
       <!--      <md-input name="color" type="text" v-model="color" @keyup="colorChange"></md-input>-->
