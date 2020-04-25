@@ -29,6 +29,9 @@
         <md-option v-for="(font, fi) in availableFonts" v-bind:value="font" v-bind:key="fi">{{ font }}</md-option>
       </md-select>
     </md-field>
+    <div v-if="!font.startsWith('minecraft:') && packLinks.hasOwnProperty(font)">
+      <a v-bind:href="packLinks[font]" target="_blank">Resource Pack</a>
+    </div>
     <div>
       <label for="color">Color</label>
       <!--      <md-input name="color" type="text" v-model="color" @keyup="colorChange"></md-input>-->
@@ -44,7 +47,7 @@
 </style>
 
 <script lang="ts">
-    import { Component, Emit, Model, Prop, PropSync, Provide, Vue } from 'vue-property-decorator'
+    import { Component, Emit, Inject, Model, Prop, PropSync, Provide, Vue } from 'vue-property-decorator'
     import { MCASSET_VERSION, BASE_FONT } from '../../vars'
     import Material from 'vue-color/src/components/Material.vue'
     import Chrome from 'vue-color/src/components/Chrome.vue'
@@ -61,7 +64,8 @@
     export default class ChatComponent extends Vue {
         @Prop(Number) arrIndex!: number;
         @Prop(Number) index!: number;
-        @Prop(Array) availableFonts!: string[]
+        @Prop(Array) availableFonts!: string[];
+        @Prop(Object) packLinks!: any;
         text = 'test';
         font = 'minecraft:default';
         italic: boolean = false
@@ -74,6 +78,7 @@
         shadow: boolean = true
 
         filter = 'saturate(1)'
+
 
         get color() {
             return this.color_

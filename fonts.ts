@@ -27,6 +27,7 @@ export const FONTS = [
     data: 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + VERSION + '/assets/minecraft/font/default.json',
     imageBase: 'public/font_textures/bdcraft/',
     prefix: 'minecraft:',
+    link: "https://bdcraft.net/downloads/purebdcraft-minecraft/",
     doNotCrop: true // disable automatic cropping here for now, since it cuts off too much when scaling up the default
   }
 ];

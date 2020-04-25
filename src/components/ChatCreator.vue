@@ -13,7 +13,7 @@
             <md-card-content>
               <div v-for="(comp, arrIndex) in components" :key="comp.index">
                 <br/>
-                <ChatComponent v-bind:index="comp.index" v-bind:arr-index="arrIndex" v-bind:available-fonts="availableFonts"
+                <ChatComponent v-bind:index="comp.index" v-bind:arr-index="arrIndex" v-bind:available-fonts="availableFonts" v-bind:pack-links="packLinks"
                                @textChange="onText" @fontChange="onFont" @colorChange="onColor"
                                @boldChange="onBold" @italicChange="onItalic" @underlineChange="onUnderlined" @strikethroughChange="onStrikethrough" @obfuscatedChange="onObfuscated"
                                @removeComponent="removeComponent">
@@ -213,6 +213,8 @@
         availableFonts: string[] = [];
         fontData: any = {};
 
+        packLinks: any = {};
+
         previewScale: number =2
         //
         // @Watch('components', { deep: true })
@@ -336,6 +338,9 @@
             FONTS.forEach((font: any) => {
                 fetch(font.data).then((res) => res.json()).then((data) => {
                     this.addFont(font.name, data);
+                    if (font.link) {
+                        this.packLinks[font.name] = font.link;
+                    }
                 });
             })
         }
