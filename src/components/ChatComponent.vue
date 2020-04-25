@@ -144,7 +144,7 @@
             }
         }
 
-        charContainerStyle(c: string, fontData: any, previewScale: number) {
+        charContainerStyle(c: string, fontData: any, previewScale: number, hasAnyUnderlineOrStrikethrough: boolean = false ) {
             if (!previewScale) {
                 previewScale = 2;
             }
@@ -153,7 +153,7 @@
             if (this.shadow) {
                 height += previewScale;
             }
-            if (this.underlined) {
+            if (hasAnyUnderlineOrStrikethrough) {
                 height += (previewScale * 2);
             }
 

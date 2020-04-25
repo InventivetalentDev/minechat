@@ -61,7 +61,7 @@
                   <template v-for="(component, compIndex) in components" v-bind:style="component.compStyle()">
                     <!-- Iterate all characters -->
                     <!-- Swap IMG with BR for line breaks -->
-                    <component v-for="(t, ti) in component.text" :key="component.index + '_' + ti" v-bind:title="t" v-bind:is="isLineBreak(t) ? 'br' : 'div'" class="char-container" v-bind:style="component.charContainerStyle(t, fontData, previewScale)" :data-char-code="t.charCodeAt(0)">
+                    <component v-for="(t, ti) in component.text" :key="component.index + '_' + ti" v-bind:title="t" v-bind:is="isLineBreak(t) ? 'br' : 'div'" class="char-container" v-bind:style="component.charContainerStyle(t, fontData, previewScale, hasUnderlineOrStrikethrough())" :data-char-code="t.charCodeAt(0)">
                       <!-- Stuff rendered in background -->
                       <!---- Shadows ---->
                       <img v-if="!isLineBreak(t) && component.shadow"  v-bind:src="component.charSrc(t)" v-bind:style="component.charStyle(t, fontData, previewScale, false, true)" class="shadow-char"/>
@@ -82,10 +82,13 @@
                 </div>
               </div>
 
+              <br/>
+
              <div>
-               <code>
-                 <pre>{{ componentJson }}</pre>
-               </code>
+               <md-field>
+                 <label>/tellraw command <template v-if="javaComponentJson.length>=256">REQUIRES COMMAND BLOCK</template></label>
+                 <md-input type="text" :value="'tellraw @p ' + javaComponentJson" readonly></md-input>
+               </md-field>
              </div>
             </md-card-content>
           </md-card>
@@ -233,7 +236,7 @@
         //     return 'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@' + MCASSET_VERSION + '/assets/minecraft/textures/' + font
         // }
 
-        get componentJson() {
+        get javaComponentJson() {
             const base: any = {
                 text: "",
                 extra: []
@@ -241,11 +244,19 @@
             this.components.forEach((comp: any) => {
                 base.extra.push(comp.getJson())
             })
-            return base
+            return JSON.stringify(base);
         }
 
         get backgroundTextureKeys() {
             return Object.keys(this.backgroundTextures);
+        }
+
+        hasUnderlineOrStrikethrough(): boolean {
+            for (let comp of this.components) {
+                let a = comp as any;
+                if(a.underlined||a.strikethrough)return true;
+            }
+            return false;
         }
 
         backgroundStyle() {
