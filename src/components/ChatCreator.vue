@@ -86,7 +86,7 @@
 
              <div>
                <md-field>
-                 <label>/tellraw command <template v-if="javaComponentJson.length>=256">REQUIRES COMMAND BLOCK</template></label>
+                 <label>Java /tellraw command <template v-if="javaComponentJson.length>=256">REQUIRES COMMAND BLOCK</template></label>
                  <md-input type="text" :value="'tellraw @p ' + javaComponentJson" readonly></md-input>
                </md-field>
              </div>
