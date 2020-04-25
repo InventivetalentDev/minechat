@@ -140,7 +140,8 @@
 
             return {
                 width,
-                height
+                height,
+                fontSizeMultiplier
             }
         }
 
@@ -148,19 +149,19 @@
             if (!previewScale) {
                 previewScale = 2;
             }
-            let { width, height } = this.fontMetrics(c, fontData, previewScale);
+            let { width, height, fontSizeMultiplier } = this.fontMetrics(c, fontData, previewScale);
 
             if (this.shadow) {
-                height += previewScale;
+                height += previewScale/fontSizeMultiplier;
             }
             if (hasAnyUnderlineOrStrikethrough) {
-                height += (previewScale * 2);
+                height += (previewScale/fontSizeMultiplier * 2);
             }
 
             const style: any = {
                 // filter: this.filter,
                 height: height + "px",
-                marginRight: ((this.bold ? 2 : 1) * previewScale) + "px"
+                marginRight: ((this.bold ? 2 : 1) * previewScale/fontSizeMultiplier) + "px"
             };
             if (width > 0) {
                 style.width = width + "px";
@@ -173,7 +174,7 @@
             if (!previewScale) {
                 previewScale = 2;
             }
-            let { width, height } = this.fontMetrics(c, fontData, previewScale);
+            let { width, height, fontSizeMultiplier } = this.fontMetrics(c, fontData, previewScale);
 
             const style: any = {
                 width: (width + (previewScale * 2)) + "px",// char width + right overlap
@@ -184,17 +185,17 @@
 
             let filter = this.filter;
             if (this.shadow && isShadowChar) {
-                style.marginLeft += previewScale
-                style.marginTop += previewScale
+                style.marginLeft += previewScale/fontSizeMultiplier
+                style.marginTop += previewScale/fontSizeMultiplier
 
                 filter += " brightness(0.35)"
             }
 
             if (this.underlined && !isStrikethrough) {
-                style.marginTop += (2 * previewScale)
+                style.marginTop += (2 * previewScale/fontSizeMultiplier)
             }
             if (this.strikethrough && isStrikethrough) {
-                style.marginTop += previewScale
+                style.marginTop += previewScale/fontSizeMultiplier
             }
 
             style.filter = filter;
@@ -210,7 +211,7 @@
             if (!previewScale) {
                 previewScale = 2;
             }
-            let { width, height } = this.fontMetrics(c, fontData, previewScale);
+            let { width, height, fontSizeMultiplier } = this.fontMetrics(c, fontData, previewScale);
 
             const style: any = {
                 // Component stuff
@@ -228,8 +229,8 @@
 
             let filter = this.filter;
             if (this.shadow && isShadowChar) {
-                style.marginLeft += previewScale
-                style.marginTop += previewScale
+                style.marginLeft += previewScale/fontSizeMultiplier
+                style.marginTop += previewScale/fontSizeMultiplier
 
                 filter += " brightness(0.35)"
             }
@@ -239,20 +240,20 @@
                 // Minecraft does it a bit sneaky by rendering the char twice, the second one with a +1x offset
                 // So let's just do the same! :D
                 if (isBoldChar) {
-                    style.marginLeft += previewScale
+                    style.marginLeft += previewScale/fontSizeMultiplier
                 } else {
-                    style.marginRight += (2 * previewScale)
+                    style.marginRight += previewScale/fontSizeMultiplier
                 }
             }
             if (this.italic) {
                 transforms += "skew(-10deg) ";
             }
-            if (this.underlined && c === "underline") {
-                style.marginTop += (2 * previewScale);
-            }
-            if (this.strikethrough && c === "strikethrough") {
-                style.marginTop += previewScale;
-            }
+            // if (this.underlined && c === "underline") {
+            //     style.marginTop += previewScale;
+            // }
+            // if (this.strikethrough && c === "strikethrough") {
+            //     style.marginTop += previewScale;
+            // }
             style.transform = transforms;
 
             style.filter = filter;

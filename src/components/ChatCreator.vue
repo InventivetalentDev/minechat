@@ -143,7 +143,7 @@
   }
 
   .text-renderer {
-    padding: 10px;
+    padding: 20px;
   }
 
   .char-container {
@@ -346,6 +346,7 @@
         }
 
         mounted(): void {
+            window.console.log(FONTS)
             FONTS.forEach((font: any) => {
                 fetch(font.data).then((res) => res.json()).then((data) => {
                     this.addFont(font.name, data);
