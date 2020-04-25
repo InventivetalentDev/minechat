@@ -152,10 +152,10 @@
             let { width, height, fontSizeMultiplier } = this.fontMetrics(c, fontData, previewScale);
 
             if (this.shadow) {
-                height += previewScale/fontSizeMultiplier;
+                height += previewScale;
             }
             if (hasAnyUnderlineOrStrikethrough) {
-                height += (previewScale/fontSizeMultiplier * 2);
+                height += (previewScale * 2);
             }
 
             const style: any = {
@@ -185,17 +185,17 @@
 
             let filter = this.filter;
             if (this.shadow && isShadowChar) {
-                style.marginLeft += previewScale/fontSizeMultiplier
-                style.marginTop += previewScale/fontSizeMultiplier
+                style.marginLeft += previewScale
+                style.marginTop += previewScale
 
                 filter += " brightness(0.35)"
             }
 
             if (this.underlined && !isStrikethrough) {
-                style.marginTop += (2 * previewScale/fontSizeMultiplier)
+                style.marginTop += (2 * previewScale)
             }
             if (this.strikethrough && isStrikethrough) {
-                style.marginTop += previewScale/fontSizeMultiplier
+                style.marginTop += previewScale
             }
 
             style.filter = filter;
@@ -230,7 +230,7 @@
             let filter = this.filter;
             if (this.shadow && isShadowChar) {
                 style.marginLeft += previewScale/fontSizeMultiplier
-                style.marginTop += previewScale/fontSizeMultiplier
+                style.marginTop += previewScale
 
                 filter += " brightness(0.35)"
             }
