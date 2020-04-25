@@ -176,7 +176,7 @@
 <script lang="ts">
     import { Component, Emit, Prop, PropSync, Provide, Vue, Watch } from 'vue-property-decorator'
     import ChatComponent from '@/components/ChatComponent.vue'
-    import { MCASSET_VERSION } from '../../vars'
+    import { DEFAULT_PREVIEW_SCALE, MCASSET_VERSION } from '../../vars'
 
     import {FONTS} from "../../fonts"
 
@@ -218,7 +218,7 @@
 
         packLinks: any = {};
 
-        previewScale: number =2
+        previewScale: number = DEFAULT_PREVIEW_SCALE
         //
         // @Watch('components', { deep: true })
         // componentChanged (val: any, oldVal: any) {

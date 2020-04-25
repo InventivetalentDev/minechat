@@ -48,7 +48,7 @@
 
 <script lang="ts">
     import { Component, Emit, Inject, Model, Prop, PropSync, Provide, Vue } from 'vue-property-decorator'
-    import { MCASSET_VERSION, BASE_FONT } from '../../vars'
+    import { MCASSET_VERSION, BASE_FONT, DEFAULT_PREVIEW_SCALE } from '../../vars'
     import Material from 'vue-color/src/components/Material.vue'
     import Chrome from 'vue-color/src/components/Chrome.vue'
 
@@ -129,7 +129,7 @@
 
         fontMetrics(c: string, fontData: any, previewScale: number) {
             if (!previewScale) {
-                previewScale = 2;
+                previewScale = DEFAULT_PREVIEW_SCALE;
             }
             const charCode = c.charCodeAt(0);
             const baseSize = fontData[BASE_FONT].sizes["" + charCode];
@@ -147,7 +147,7 @@
 
         charContainerStyle(c: string, fontData: any, previewScale: number, hasAnyUnderlineOrStrikethrough: boolean = false ) {
             if (!previewScale) {
-                previewScale = 2;
+                previewScale = DEFAULT_PREVIEW_SCALE;
             }
             let { width, height, fontSizeMultiplier } = this.fontMetrics(c, fontData, previewScale);
 
@@ -172,7 +172,7 @@
 
         underlineStrikethroughStyle(c: string, fontData: any, previewScale: number, isStrikethrough: boolean = false, isShadowChar: boolean = false) {
             if (!previewScale) {
-                previewScale = 2;
+                previewScale = DEFAULT_PREVIEW_SCALE;
             }
             let { width, height, fontSizeMultiplier } = this.fontMetrics(c, fontData, previewScale);
 
@@ -209,7 +209,7 @@
 
         charStyle(c: string, fontData: any, previewScale: number, isBoldChar: boolean = false, isShadowChar: boolean = false) {
             if (!previewScale) {
-                previewScale = 2;
+                previewScale = DEFAULT_PREVIEW_SCALE;
             }
             let { width, height, fontSizeMultiplier } = this.fontMetrics(c, fontData, previewScale);
 
