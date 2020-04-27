@@ -1,6 +1,5 @@
 <template>
   <div class="chat-component">
-    I{{ index }} A{{ arrIndex }}
     <md-button class="md-accent remove-component-button narrow-button" @click="removeSelf">X</md-button>
     <div>
       <md-field>
