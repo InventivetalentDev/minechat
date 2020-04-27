@@ -6,6 +6,17 @@
       <label for="text">Text</label>
       <md-textarea name="text" type="text" v-model="text" @keyup="textChange"></md-textarea>
     </md-field>
+    <md-field>
+      <label for="Type"></label>
+      <md-select name="type" v-model="type" @md-selected="typeChange">
+        <md-option value="text">Plain Text</md-option>
+        <md-option value="translate">Translated Text</md-option>
+        <md-option value="score" disabled>Scoreboard Value</md-option>
+        <md-option value="selector">Entity Names</md-option>
+        <md-option value="keybind">Keybind</md-option>
+        <md-option value="nbt" disabled>NBT Value</md-option>
+      </md-select>
+    </md-field>
     <div class="md-layout">
       <div class="md-layout">
         <md-checkbox name="bold" v-model="bold" @change="boldChange">Bold</md-checkbox>
@@ -57,6 +68,28 @@
         <md-button @click="setColor('#FFFFFF')" style="background-color: #FFFFFF; ">(§f) White</md-button>
       </div>
     </div>
+    <div class="md-layout md-gutter">
+      <div class="md-layout-item">
+        <md-field>
+          <label for="clickEventAction">Action</label>
+          <md-select id="clickEventAction" v-model="clickEventAction" @md-selected="clickEventActionChange">
+            <md-option value="none">None</md-option>
+            <md-option value="open_url">Open URL</md-option>
+            <md-option value="open_file">Open File</md-option>
+            <md-option value="run_command">Run Command</md-option>
+            <md-option value="suggest_command">Suggest Command</md-option>
+            <md-option value="change_page">Change Page (Book Only)</md-option>
+            <md-option value="copy_to_clipboard">Copy To Clipboard</md-option>
+          </md-select>
+        </md-field>
+      </div>
+      <div class="md-layout-item">
+        <md-field>
+          <label for="clickEventValue">Value</label>
+          <md-input id="clickEventValue" type="text" v-model="clickEventValue" :disabled="clickEventAction==='none'" @keyup="clickEventValueChange"></md-input>
+        </md-field>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -86,6 +119,7 @@
         @Prop(Number) index!: number;
         @Prop(Array) availableFonts!: string[];
         @Prop(Object) packLinks!: any;
+        type = 'text';
         text = 'test';
         font = 'minecraft:default';
         italic: boolean = false
@@ -94,6 +128,9 @@
         strikethrough: boolean = false
         obfuscated: boolean = false
         color_ = '#ffffff';
+
+        clickEventAction = 'none';
+        clickEventValue = '';
 
         shadow: boolean = true
 
@@ -186,7 +223,7 @@
             const style: any = {
                 // filter: this.filter,
                 height: height + "px",
-                marginRight: ((this.bold ? 2 : 1) * previewScale/fontSizeMultiplier) + "px"
+                marginRight: ((this.bold ? 2 : 1) * previewScale / fontSizeMultiplier) + "px"
             };
             if (width > 0) {
                 style.width = width + "px";
@@ -254,7 +291,7 @@
 
             let filter = this.filter;
             if (shadow && isShadowChar) {
-                style.marginLeft += previewScale/fontSizeMultiplier
+                style.marginLeft += previewScale / fontSizeMultiplier
                 style.marginTop += previewScale
 
                 filter += " brightness(0.35)"
@@ -265,9 +302,9 @@
                 // Minecraft does it a bit sneaky by rendering the char twice, the second one with a +1x offset
                 // So let's just do the same! :D
                 if (isBoldChar) {
-                    style.marginLeft += previewScale/fontSizeMultiplier
+                    style.marginLeft += previewScale / fontSizeMultiplier
                 } else {
-                    style.marginRight += previewScale/fontSizeMultiplier
+                    style.marginRight += previewScale / fontSizeMultiplier
                 }
             }
             if (this.italic) {
@@ -292,10 +329,10 @@
 
 
         getJson(): any {
-            return {
+            let json: any = {
                 _idx: this.index || -1,
                 _aidx: this.arrIndex || -1,
-                text: this.text,
+                _type: this.type,
                 color: this.color,
                 font: this.font,
                 bold: this.bold,
@@ -303,7 +340,38 @@
                 italic: this.italic,
                 strikethrough: this.strikethrough,
                 obfuscated: this.obfuscated
+            };
+
+            switch (this.type) {
+                case 'text':
+                    json.text = this.text;
+                    break;
+                case 'translate':
+                    json.translate = this.text;
+                    //TODO: with
+                    break;
+                case 'score':
+                    //TODO
+                    break;
+                case 'selector':
+                    json.selector = this.text;
+                    break;
+                case 'keybind':
+                    json.keybind = this.text;
+                    break;
+                case 'nbt':
+                    //TODO
+                    break;
             }
+
+            if (this.clickEventAction !== "none") {
+                json.clickEvent = {
+                    action: this.clickEventAction,
+                    value: this.clickEventValue
+                }
+            }
+
+            return json;
         }
 
         textChange() {
@@ -340,6 +408,18 @@
 
         obfuscatedChange() {
             this.$emit('obfuscatedChange', { index: this.arrIndex, value: this.obfuscated })
+        }
+
+        typeChange() {
+            this.$emit('typeChange', { index: this.arrIndex, value: this.type })
+        }
+
+        clickEventActionChange() {
+            this.$emit('clickEventActionChange', { index: this.arrIndex, value: this.clickEventAction })
+        }
+
+        clickEventValueChange() {
+            this.$emit('clickEventValueChange', { index: this.arrIndex, value: this.clickEventValue })
         }
 
         removeSelf() {

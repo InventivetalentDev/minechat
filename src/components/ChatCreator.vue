@@ -14,8 +14,9 @@
               <div v-for="(comp, arrIndex) in components" :key="comp.index">
                 <br/>
                 <ChatComponent v-bind:index="comp.index" v-bind:arr-index="arrIndex" v-bind:available-fonts="availableFonts" v-bind:pack-links="packLinks"
-                               @textChange="onText" @fontChange="onFont" @colorChange="onColor"
+                               @typeChange="onType" @textChange="onText" @fontChange="onFont" @colorChange="onColor"
                                @boldChange="onBold" @italicChange="onItalic" @underlineChange="onUnderlined" @strikethroughChange="onStrikethrough" @obfuscatedChange="onObfuscated"
+                               @clickEventActionChange="onClickEventAction" @clickEventValueChange="onClickEventValue"
                                @removeComponent="removeComponent">
                   <!--      <component :is="item" :key="index"></component>-->
                 </ChatComponent>
@@ -314,6 +315,18 @@
 
         onObfuscated(data: any) {
             this.setCompProp(data.index, 'obfuscated', data.value)
+        }
+
+        onType(data: any) {
+            this.setCompProp(data.index, 'type', data.value)
+        }
+
+        onClickEventAction(data: any) {
+            this.setCompProp(data.index, 'clickEventAction', data.value)
+        }
+
+        onClickEventValue(data: any) {
+            this.setCompProp(data.index, 'clickEventValue', data.value)
         }
 
         removeComponent(data: any) {
