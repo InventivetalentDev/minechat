@@ -261,7 +261,7 @@
             }
 
             if (this.underlined && !isStrikethrough) {
-                style.marginTop += (2 * previewScale)
+                style.marginTop +=  previewScale
             }
             if (this.strikethrough && isStrikethrough) {
                 style.marginTop += previewScale
