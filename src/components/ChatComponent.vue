@@ -2,21 +2,25 @@
   <div class="chat-component">
     I{{ index }} A{{ arrIndex }}
     <md-button class="md-accent remove-component-button narrow-button" @click="removeSelf">X</md-button>
-    <md-field>
-      <label for="text">Text</label>
-      <md-textarea name="text" type="text" v-model="text" @keyup="textChange"></md-textarea>
-    </md-field>
-    <md-field>
-      <label for="Type"></label>
-      <md-select name="type" v-model="type" @md-selected="typeChange">
-        <md-option value="text">Plain Text</md-option>
-        <md-option value="translate">Translated Text</md-option>
-        <md-option value="score" disabled>Scoreboard Value</md-option>
-        <md-option value="selector">Entity Names</md-option>
-        <md-option value="keybind">Keybind</md-option>
-        <md-option value="nbt" disabled>NBT Value</md-option>
-      </md-select>
-    </md-field>
+    <div>
+      <md-field>
+        <label for="text">Text</label>
+        <md-textarea name="text" type="text" v-model="text" @keyup="textChange"></md-textarea>
+      </md-field>
+    </div>
+   <div>
+     <md-field>
+       <label for="Type"></label>
+       <md-select name="type" v-model="type" @md-selected="typeChange">
+         <md-option value="text">Plain Text</md-option>
+         <md-option value="translate">Translated Text</md-option>
+         <md-option value="score" disabled>Scoreboard Value</md-option>
+         <md-option value="selector">Entity Names</md-option>
+         <md-option value="keybind">Keybind</md-option>
+         <md-option value="nbt" disabled>NBT Value</md-option>
+       </md-select>
+     </md-field>
+   </div>
     <div class="md-layout">
       <div class="md-layout">
         <md-checkbox name="bold" v-model="bold" @change="boldChange">Bold</md-checkbox>
@@ -34,15 +38,17 @@
         <md-checkbox name="obfuscated" v-model="obfuscated" @change="obfuscatedChange" disabled="">Obfuscated</md-checkbox>
       </div>
     </div>
-    <md-field>
-      <label for="font">Font</label>
-      <md-select name="font" v-model="font" @md-selected="fontChange">
-        <md-option v-for="(font, fi) in availableFonts" v-bind:value="font" v-bind:key="fi">{{ font }}</md-option>
-      </md-select>
-      <span class="md-suffix" v-if="!font.startsWith('minecraft:') && packLinks.hasOwnProperty(font)">
+   <div>
+     <md-field>
+       <label for="font">Font</label>
+       <md-select name="font" v-model="font" @md-selected="fontChange">
+         <md-option v-for="(font, fi) in availableFonts" v-bind:value="font" v-bind:key="fi">{{ font }}</md-option>
+       </md-select>
+       <span class="md-suffix" v-if="!font.startsWith('minecraft:') && packLinks.hasOwnProperty(font)">
       <a v-bind:href="packLinks[font]" target="_blank">Resource Pack Link</a>
     </span>
-    </md-field>
+     </md-field>
+   </div>
     <div class="md-layout">
       <div class="md-layout-item">
         <label for="color">Color</label>
@@ -68,6 +74,7 @@
         <md-button @click="setColor('#FFFFFF')" style="background-color: #FFFFFF; ">(§f) White</md-button>
       </div>
     </div>
+    <br/>
     <div class="md-layout md-gutter">
       <div class="md-layout-item">
         <md-field>
