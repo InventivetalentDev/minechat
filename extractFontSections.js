@@ -58,7 +58,7 @@ async function doStuff () {
             console.log('original ascent: ' + ascent)
             let scaledAscent = font.doNotScale ? ascent : (ascent * imgScale)
             console.log('scaled ascent: ' + scaledAscent)
-                sec = cropAlphaRightBottom(sec, scaledAscent, 0.1, !font.doNotCrop)
+                sec = cropAlphaRightBottom(sec, scaledAscent, 0.1)
             // if (ascent && !font.doNotCrop) {// this seems to specifiy the height of the character
             //   sec = sec.crop({
             //     x: 0,
@@ -89,29 +89,17 @@ async function doStuff () {
 }
 
 // based on https://github.com/image-js/image-js/blob/a2deb5b4c193263d1cb784005d904ec7966f63cb/src/image/transform/cropAlpha.js#L10 - only cropping right side
-function cropAlphaRightBottom (image, ascent, threshold = 0.5, doVerticalCrop = false) {
+function cropAlphaRightBottom (image, ascent, threshold = 0.5) {
   let right = findRight(image, threshold)
   if (right === -1) {
     return image
   }
-  let bottom = findBottom(image, threshold)
-  if (bottom === -1) {
-    return image
-  }
-
-  let y2 = bottom + 1
-  let y1 = y2 - ascent
-
-  let yh = y2 - y1
-
-  let y = image.height - bottom + 1
-  let h = Math.max(Math.min(bottom, image.height), Math.min(image.height, ascent))
 
   return image.crop({
     x: 0,
-    y: doVerticalCrop ? Math.max(0, y1):0,
+    y: 0,
     width: Math.min(right + 1 /*+ 1*/, image.width)/* 1 to get to actual with and another 1 for padding */,
-    height: doVerticalCrop  ?  yh :image.height
+    height: image.height
   })
 }
 
@@ -144,6 +132,18 @@ function findRight (image, threshold) {
 // https://github.com/image-js/image-js/blob/a2deb5b4c193263d1cb784005d904ec7966f63cb/src/image/transform/cropAlpha.js#L59
 function findBottom (image, threshold) {
   for (let y = image.height - 1; y >= 0; y--) {
+    for (let x = 0; x < image.width; x++) {
+      if (image.getValueXY(x, y, 3) >= threshold) {
+        return y
+      }
+    }
+  }
+  return -1
+}
+
+// https://github.com/image-js/image-js/blob/a2deb5b4c193263d1cb784005d904ec7966f63cb/src/image/transform/cropAlpha.js#L48
+function findTop (image, threshold) {
+  for (let y = 0; y < image.height; y++) {
     for (let x = 0; x < image.width; x++) {
       if (image.getValueXY(x, y, 3) >= threshold) {
         return y
