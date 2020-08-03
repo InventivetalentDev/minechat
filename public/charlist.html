@@ -19,7 +19,7 @@
 
             .unicode-img {
                 height: 65vh;
-                padding: 6px;
+                padding: 8px;
             }
         </style>
     </head>
@@ -68,7 +68,7 @@
                         loadInfo.text("Loading " + i + "/" + toLoad);
                         let img0 = new Image();
                         img0.onload = () => {
-                            charContainer.append("<img class='char-img' src='" + img0.src + "' alt='" + ids[i] + "' >")
+                            charContainer.append("<img class='char-img' src='" + img0.src + "' title='" + ids[i] + "' >")
                         };
                         img0.src = "/font_data/minecraft/default/c" + ids[i] + ".png";
                     }
@@ -83,7 +83,7 @@
                 function loadUnicode(i) {
                     let img0 = new Image();
                     img0.onload = () => {
-                        unicodeContainer.append("<img class='unicode-img' src='https://assets.mcasset.cloud/20w17a/assets/minecraft/textures/font/unicode_page_"+toHex(i)+".png'>")
+                        unicodeContainer.append("<img class='unicode-img' src='https://assets.mcasset.cloud/20w17a/assets/minecraft/textures/font/unicode_page_"+toHex(i)+".png' title='"+(i*256)+"-"+(i*256+255)+"'>")
                     };
                     img0.src = "https://assets.mcasset.cloud/20w17a/assets/minecraft/textures/font/unicode_page_" + toHex(i) + ".png";
                 }
