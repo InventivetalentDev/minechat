@@ -275,9 +275,9 @@
                         }
                     }
 
-                    makeImageMap(CHARS_ASCII, "ascii", 8, 8, 128);
-                    makeImageMap(CHARS_NONLATIN, "nonlatin_european", 8, 8, 128);
-                    makeImageMap(CHARS_ACCENTED, "accented", 8, 12, 144);
+                    makeImageMap(CHARS_ASCII, "ascii", 128/16, 8, 128);
+                    makeImageMap(CHARS_NONLATIN, "nonlatin_european", 128/16, 8, 128);
+                    makeImageMap(CHARS_ACCENTED, "accented", 144/16, 12, 144);
 
                     function makeImageMap(chars, file, w, h, width) {
                         let wrapper = $("<div class='unicode-img-wrapper'></div>");
