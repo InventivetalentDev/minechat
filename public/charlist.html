@@ -60,17 +60,17 @@
 
                 let version = $("#version-input").val();
 
-                charContainer.append("<img class='unicode-img' src='https://assets.mcasset.cloud/"+version+"/assets/minecraft/textures/font/ascii.png' title='ascii (0-255)'>")
-                charContainer.append("<img class='unicode-img' src='https://assets.mcasset.cloud/"+version+"/assets/minecraft/textures/font/nonlatin_european.png' title='nonlatin'>")
-                charContainer.append("<img class='unicode-img' src='https://assets.mcasset.cloud/"+version+"/assets/minecraft/textures/font/accented.png' title='accented'>")
+                charContainer.append("<img class='unicode-img' src='https://assets.mcasset.cloud/" + version + "/assets/minecraft/textures/font/ascii.png' title='ascii (0-255)'>")
+                charContainer.append("<img class='unicode-img' src='https://assets.mcasset.cloud/" + version + "/assets/minecraft/textures/font/nonlatin_european.png' title='nonlatin'>")
+                charContainer.append("<img class='unicode-img' src='https://assets.mcasset.cloud/" + version + "/assets/minecraft/textures/font/accented.png' title='accented'>")
 
                 for (let j = 0; j < 256; j++) {
-                    unicodeContainer.append("<img class='unicode-img' src='https://assets.mcasset.cloud/"+version+"/assets/minecraft/textures/font/unicode_page_"+toHex(j,2)+".png' title='"+toHex(j*256,4)+"-"+toHex(j*256+255,4)+"'>")
+                    unicodeContainer.append("<img class='unicode-img' src='https://assets.mcasset.cloud/" + version + "/assets/minecraft/textures/font/unicode_page_" + toHex(j, 2) + ".png' title='" + toHex(j * 256, 4) + "-" + toHex(j * 256 + 255, 4) + "'>")
                 }
 
-                function toHex(i,l) {
+                function toHex(i, l) {
                     let hex = i.toString(16);
-                    while(hex.length<l) {
+                    while (hex.length < l) {
                         hex = "0" + hex;
                     }
                     return hex;
