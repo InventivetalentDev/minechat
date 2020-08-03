@@ -65,12 +65,12 @@
                 charContainer.append("<img class='unicode-img' src='https://assets.mcasset.cloud/"+version+"/assets/minecraft/textures/font/accented.png' title='accented'>")
 
                 for (let j = 0; j < 256; j++) {
-                    unicodeContainer.append("<img class='unicode-img' src='https://assets.mcasset.cloud/"+version+"/assets/minecraft/textures/font/unicode_page_"+toHex(j)+".png' title='"+(j*256)+"-"+(j*256+255)+"'>")
+                    unicodeContainer.append("<img class='unicode-img' src='https://assets.mcasset.cloud/"+version+"/assets/minecraft/textures/font/unicode_page_"+toHex(j,2)+".png' title='"+toHex(j*256,4)+"-"+toHex(j*256+255,4)+"'>")
                 }
 
-                function toHex(i) {
+                function toHex(i,l) {
                     let hex = i.toString(16);
-                    if(hex.length<2) {
+                    while(hex.length<l) {
                         hex = "0" + hex;
                     }
                     return hex;
