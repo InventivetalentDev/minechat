@@ -72,12 +72,20 @@
                         };
                         img0.src = "/font_data/minecraft/default/c" + ids[i] + ".png";
                     }
+
                 });
 
 
-
                 for (let j = 0; j < 256; j++) {
-                    unicodeContainer.append("<img class='unicode-img' src='https://assets.mcasset.cloud/20w17a/assets/minecraft/textures/font/unicode_page_"+toHex(j)+".png'>");
+                    loadUnicode(j);
+                }
+
+                function loadUnicode(i) {
+                    let img0 = new Image();
+                    img0.onload = () => {
+                        unicodeContainer.append("<img class='unicode-img' src='https://assets.mcasset.cloud/20w17a/assets/minecraft/textures/font/unicode_page_"+toHex(i)+".png'>")
+                    };
+                    img0.src = "https://assets.mcasset.cloud/20w17a/assets/minecraft/textures/font/unicode_page_" + toHex(i) + ".png";
                 }
 
                 function toHex(i) {
@@ -87,6 +95,7 @@
                     }
                     return hex;
                 }
+
             })
         </script>
     </body>
