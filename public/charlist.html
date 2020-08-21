@@ -275,9 +275,9 @@
                         }
                     }
 
-                    makeImageMap(CHARS_ASCII, "ascii", 128/16, 8, 128);
-                    makeImageMap(CHARS_NONLATIN, "nonlatin_european", 128/16, 8, 128);
-                    makeImageMap(CHARS_ACCENTED, "accented", 144/16, 12, 144);
+                    setTimeout(() => makeImageMap(CHARS_ASCII, "ascii", 128 / 16, 8, 128), 200);
+                    setTimeout(() => makeImageMap(CHARS_NONLATIN, "nonlatin_european", 128 / 16, 8, 128), 400);
+                    setTimeout(() => makeImageMap(CHARS_ACCENTED, "accented", 144 / 16, 12, 144), 600);
 
                     function makeImageMap(chars, file, w, h, width) {
                         let wrapper = $("<div class='unicode-img-wrapper'></div>");
@@ -297,22 +297,24 @@
                     }
 
                     for (let j = 0; j < 256; j++) {
-                        let wrapper = $("<div class='unicode-img-wrapper'></div>");
-                        let range = toHex(j * 256, 4) + "-" + toHex(j * 256 + 255, 4);
-                        let img = $("<img usemap='#unicode-map-" + range + "' class='unicode-img' src='https://assets.mcasset.cloud/" + version + "/assets/minecraft/textures/font/unicode_page_" + toHex(j, 2) + ".png'>");
-                        img.appendTo(wrapper);
-                        let map = $("<map name='unicode-map-" + range + "'></map>")
-                        let r = -1;
-                        for (let k = 0; k < 256; k++) {
-                            let c = k % 16;
-                            if (k % 16 === 0) r++;
-                            let x = toHex(j * 256 + k, 4);
-                            map.append("<area shape='rect' coords='" + (c * 16) + "," + (r * 16) + "," + (c * 16 + 16) + "," + (r * 16 + 16) + "' title='" + x + "' alt='" + x + "' target='_blank' href='https://unicode-table.com/en/" + x + "'>")
-                        }
-                        map.appendTo(wrapper);
-                        wrapper.appendTo(unicodeContainer);
+                        setTimeout(()=>{
+                            let wrapper = $("<div class='unicode-img-wrapper'></div>");
+                            let range = toHex(j * 256, 4) + "-" + toHex(j * 256 + 255, 4);
+                            let img = $("<img usemap='#unicode-map-" + range + "' class='unicode-img' src='https://assets.mcasset.cloud/" + version + "/assets/minecraft/textures/font/unicode_page_" + toHex(j, 2) + ".png'>");
+                            img.appendTo(wrapper);
+                            let map = $("<map name='unicode-map-" + range + "'></map>")
+                            let r = -1;
+                            for (let k = 0; k < 256; k++) {
+                                let c = k % 16;
+                                if (k % 16 === 0) r++;
+                                let x = toHex(j * 256 + k, 4);
+                                map.append("<area shape='rect' coords='" + (c * 16) + "," + (r * 16) + "," + (c * 16 + 16) + "," + (r * 16 + 16) + "' title='" + x + "' alt='" + x + "' target='_blank' href='https://unicode-table.com/en/" + x + "'>")
+                            }
+                            map.appendTo(wrapper);
+                            wrapper.appendTo(unicodeContainer);
 
-                        new ResponsiveImageMap(map[0], img[0], 256);
+                            new ResponsiveImageMap(map[0], img[0], 256);
+                        }, j*100)
                     }
 
                     function toHex(i, l) {
